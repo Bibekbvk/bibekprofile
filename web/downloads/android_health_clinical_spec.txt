@@ -1,0 +1,5 @@
+Technical Specification: Android Health (com.mobilehealth.droidpulse.mobile_health)
+Status: Closed testing (Google Play)
+Category: Health IT & Telemetry
+Last Updated: Sep 5, 2026
+Features: Vitals telemetry, biostatistical analysis, DroidPulse core diagnostics, HL7 FHIR sync.

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Primary Meta Tags -->
+  <title>Bibek Bhattarai | Software Engineer &amp; Researcher</title>
+  <meta name="title" content="Bibek Bhattarai | Software Engineer &amp; Researcher">
+  <meta name="description" content="Personal portfolio and dynamic journal of Bibek Bhattarai. Featuring engineering showcases, interactive architecture notes, and software research.">
+  <meta name="theme-color" content="#121212">
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bibek Bhattarai | Software Engineer &amp; Researcher">
+  <meta property="og:description" content="Personal portfolio and dynamic journal of Bibek Bhattarai. Featuring engineering showcases, interactive architecture notes, and software research.">
+  <meta property="og:image" content="icons/Icon-512.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Bibek Bhattarai | Software Engineer &amp; Researcher">
+  <meta property="twitter:description" content="Personal portfolio and dynamic journal of Bibek Bhattarai. Featuring engineering showcases, interactive architecture notes, and software research.">
+  <meta property="twitter:image" content="icons/Icon-512.png">
+
+  <!-- Web & Mobile Capabilities -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Bibek Bhattarai">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    #loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      background-color: #121212;
+      color: #888888;
+      transition: opacity 0.3s ease-out;
+    }
+    .spinner {
+      width: 38px;
+      height: 38px;
+      border: 2px solid #2A2A2A;
+      border-top-color: #C5A059;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .loading-text {
+      margin-top: 18px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: #888888;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading-container">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading Experience...</div>
+  </div>
+
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      const loader = document.getElementById('loading-container');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 300);
+      }
+    });
+  </script>
+
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

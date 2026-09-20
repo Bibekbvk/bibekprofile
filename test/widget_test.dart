@@ -1,0 +1,283 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:bibek_bhattarai_portfolio/main.dart';
+
+void main() {
+  setUp(() {
+    GoogleFonts.config.allowRuntimeFetching = false;
+  });
+
+  testWidgets('Landing page, navbar, and hero section render test',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Verify Brand Logo
+    expect(find.text('Bibek Bhattarai'), findsWidgets);
+
+    // Verify Updated Navigation Architecture
+    expect(find.text('Home'), findsWidgets);
+    expect(find.text('Journals'), findsWidgets);
+    expect(find.text('Education'), findsWidgets);
+    expect(find.text('Products'), findsWidgets);
+    expect(find.text('Experience'), findsWidgets);
+    expect(find.text('Contact'), findsWidgets);
+
+    // Verify Hero Section Headline & Narrative
+    expect(
+      find.text('Bridging Enterprise IT, Healthcare Systems, and Strategic Business.'),
+      findsOneWidget,
+    );
+
+    // Verify Action Buttons
+    expect(find.text('Explore Journals'), findsOneWidget);
+    expect(find.text('Get in Touch'), findsOneWidget);
+
+    // Verify Biostatistics & Health IT Category Filter Pills
+    expect(find.text('All'), findsWidgets);
+    expect(find.text('Biostatistics'), findsWidgets);
+    expect(find.text('Clinical Informatics'), findsWidgets);
+    expect(find.text('Health Systems'), findsWidgets);
+    expect(find.text('Epidemiological AI'), findsWidgets);
+  });
+
+  testWidgets('Education section renders pure academic degrees with TU photo and no work experience',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Navigate to Education section
+    await tester.tap(find.text('Education').first);
+    await tester.pumpAndSettle();
+
+    // Verify University Campus Banner & Insignia
+    expect(
+      find.text('Tribhuvan University Clocktower Campus, Kirtipur'),
+      findsOneWidget,
+    );
+    expect(find.text('Academic Degrees & University Coursework'), findsOneWidget);
+
+    // Verify Filter Chips
+    expect(find.text('All Credentials'), findsOneWidget);
+    expect(find.text('Completed Degrees'), findsOneWidget);
+    expect(find.text('Currently Taking / Ongoing'), findsOneWidget);
+
+    // Verify All Academic Degrees and Coursework
+    expect(
+      find.text('Bachelor Degree in Education (B.Ed - 4 Years)'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Tribhuvan University • Sanothimi Campus, Bhaktapur'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Master of Business Administration (MBA)'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('BSc (Hons) Computing'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Diploma in General Medicine (Health Assistant - HA)'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('School Leaving Certificate (SLC)'),
+      findsOneWidget,
+    );
+
+    // Verify work history titles are NOT present in Education section
+    expect(find.text('Chief Technology Officer (CTO)'), findsNothing);
+    expect(find.text('Founder & Visionary'), findsNothing);
+  });
+
+  testWidgets('Products section renders Google Play apps and triggers download action',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Navigate to Products section
+    await tester.tap(find.text('Products').first);
+    await tester.pumpAndSettle();
+
+    // Verify Header Banner
+    expect(
+      find.text('Google Play Applications, Production Builds & Downloadable Binaries'),
+      findsOneWidget,
+    );
+
+    // Verify Verified Google Play Apps are Present
+    expect(find.text('Machhamart'), findsOneWidget);
+    expect(find.text('Android Health'), findsOneWidget);
+    expect(find.text('Search Everything'), findsOneWidget);
+    expect(find.text('3D MS Trader'), findsOneWidget);
+
+    // Verify other products were strictly removed
+    expect(find.text('The Fit Home Platform'), findsNothing);
+    expect(find.text('Clinical Triage & Biostatistics Engine'), findsNothing);
+    expect(find.text('Cool Multipurpose ERP & Logistics Suite'), findsNothing);
+
+    // Verify Google Play Store button for Machhamart
+    expect(find.text('View on Google Play Store'), findsOneWidget);
+
+    // Verify Download Action Buttons
+    final apkDownloadFinder = find.text('Download Production APK').first;
+    expect(apkDownloadFinder, findsOneWidget);
+    expect(find.text('Download Architecture Spec'), findsOneWidget);
+
+    // Tap download button and verify snackbar confirmation
+    await tester.ensureVisible(apkDownloadFinder);
+    await tester.tap(apkDownloadFinder);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(
+      find.text('Initiating download for Download Production APK...'),
+      findsOneWidget,
+    );
+  });
+
+
+  testWidgets('Reader View opens on Health IT article tap and displays statistics and cover image',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Tap on the featured research post
+    final featuredPostFinder = find.text(
+      'Statistical Queueing Theory & Emergency Room Triage Optimization: An Empirical Study',
+    ).first;
+    expect(featuredPostFinder, findsOneWidget);
+    await tester.tap(featuredPostFinder);
+    await tester.pumpAndSettle();
+
+    // Verify Reader View elements
+    expect(find.text('Back to Articles'), findsOneWidget);
+    expect(find.text('Finished Reading — Back to Overview'), findsOneWidget);
+    expect(
+      find.text('STATISTICAL RESEARCH REPORT • P < 0.001 SIGNIFICANCE'),
+      findsOneWidget,
+    );
+
+    // Tap Back to Articles to close reader mode
+    await tester.tap(find.text('Back to Articles'));
+    await tester.pumpAndSettle();
+
+    // Verify overview is restored
+    expect(find.text('Back to Articles'), findsNothing);
+    expect(find.text('FILTER HEALTH IT & BIOSTATISTICS JOURNALS'), findsOneWidget);
+  });
+
+  testWidgets('Experience section renders journey timeline and professional roles',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Tap on Experience nav link
+    await tester.tap(find.text('Experience').first);
+    await tester.pumpAndSettle();
+
+    // Verify Timeline Title and Professional Roles
+    expect(find.text('Professional & Educational Journey'), findsWidgets);
+    expect(find.text('Chief Technology Officer (CTO)'), findsOneWidget);
+    expect(find.text('Founder & Visionary'), findsOneWidget);
+  });
+
+  testWidgets('Contact screen renders form validation and submits inquiry',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Tap on Contact nav link
+    await tester.tap(find.text('Contact').first);
+    await tester.pumpAndSettle();
+
+    // Verify Contact Screen elements and website presence
+    expect(find.text('Start a Strategic Conversation'), findsOneWidget);
+    expect(find.text('bhattaraibvk.com.np'), findsOneWidget);
+    expect(find.text('Send a Direct Message'), findsOneWidget);
+
+    // Attempt to submit empty form to trigger validation errors
+    final submitButtonFinder = find.text('Send Inquiry Message');
+    await tester.ensureVisible(submitButtonFinder);
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Please enter your name.'), findsOneWidget);
+    expect(find.text('Please enter your email address.'), findsOneWidget);
+    expect(find.text('Please write your message or inquiry brief.'), findsOneWidget);
+
+    // Enter valid details
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'e.g. Dr. Jane Smith / Alex Rivera'),
+      'Dr. Jane Smith',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'you@organization.com'),
+      'jane.smith@hospital.org',
+    );
+    await tester.enterText(
+      find.widgetWithText(
+        TextFormField,
+        'Provide an outline of your healthcare IT project, architecture review, or strategic initiative...',
+      ),
+      'We would like to schedule an advisory consultation regarding HL7 FHIR clinical architecture.',
+    );
+
+    // Tap submit button
+    await tester.ensureVisible(submitButtonFinder);
+    await tester.tap(submitButtonFinder);
+    await tester.pump(); // starts submission
+    await tester.pump(const Duration(milliseconds: 800)); // simulates network
+    await tester.pumpAndSettle();
+
+    // Verify animated success card
+    expect(find.text('Message Transmitted Successfully'), findsOneWidget);
+    expect(find.text('Send Another Message'), findsOneWidget);
+  });
+}

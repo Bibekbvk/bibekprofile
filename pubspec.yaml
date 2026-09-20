@@ -1,0 +1,51 @@
+name: bibek_bhattarai_portfolio
+description: "High-end personal portfolio and dynamic journal web app for Bibek Bhattarai."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI & Micro-animations
+  flutter_animate: ^4.5.0
+
+  # Typography
+  google_fonts: ^6.2.1
+
+  # External Links & Web Interactions
+  url_launcher: ^6.3.0
+
+  # Rich Content Rendering for Journals & Notes
+  flutter_markdown: ^0.7.3
+
+  # Backend Connectivity (Auth, Database, Realtime)
+  supabase_flutter: ^2.6.0
+
+  # State Management
+  provider: ^6.1.2
+
+  # Icons
+  cupertino_icons: ^1.0.8
+
+  # HTTP Client
+  http: ^1.2.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/
+    - assets/images/products/
+    - assets/downloads/
