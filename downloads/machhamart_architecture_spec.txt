@@ -1,0 +1,6 @@
+Technical Specification: Machhamart (com.machhamart)
+Status: Production (Live on Google Play Store)
+Store URL: https://play.google.com/store/apps/details?id=com.machhamart
+Category: Aquaculture Logistics & E-Commerce
+Last Updated: Jul 6, 2026
+Features: Cold-chain dispatch routing, multi-vendor marketplace, real-time inventory reconciliation, digital payments.

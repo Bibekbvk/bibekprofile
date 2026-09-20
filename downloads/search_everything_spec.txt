@@ -1,0 +1,5 @@
+Technical Specification: Search Everything (com.devicefinder.app.device_finder)
+Status: Closed testing (Google Play)
+Category: System Utilities & Storage Indexer
+Last Updated: Sep 5, 2026
+Features: In-memory B-tree storage indexing, sub-50ms query latency, EXIF/ID3 metadata extraction, SAF storage support.
