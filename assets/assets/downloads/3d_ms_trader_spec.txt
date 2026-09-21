@@ -1,0 +1,5 @@
+Technical Specification: 3D MS Trader (com.mstrader.com)
+Status: Closed testing (Google Play)
+Category: FinTech & Trading Indicators
+Last Updated: Feb 22, 2022
+Features: Depth-of-market visualization, algorithmic signals, low-latency market calculations.

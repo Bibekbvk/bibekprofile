@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://bhattaraibvk.com.np/</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/bibek_portrait.png</image:loc>
+      <image:title>Bibek Bhattarai (Bvk Bhattarai) - Software Developer</image:title>
+      <image:caption>Bibek Bhattarai portrait - Software Developer, Health IT &amp; Strategic Business Executive</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/bibek_standing.jpg</image:loc>
+      <image:title>Bibek Bhattarai (Bvk Bhattarai) Professional Photo</image:title>
+      <image:caption>Bibek Bhattarai standing professional portrait in Nepal</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/products/machhamart_banner.png</image:loc>
+      <image:title>Machhamart - Google Play App by Bibek Bhattarai</image:title>
+      <image:caption>Machhamart aquaculture marketplace mobile application</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/products/icon_machhamart.png</image:loc>
+      <image:title>Machhamart App Icon</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/products/icon_android_health.png</image:loc>
+      <image:title>Android Health App Icon</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/products/icon_search_everything.png</image:loc>
+      <image:title>Search Everything App Icon</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/products/icon_3d_ms_trader.png</image:loc>
+      <image:title>3D MS Trader App Icon</image:title>
+    </image:image>
+  </url>
+</urlset>
