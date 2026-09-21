@@ -8,8 +8,8 @@
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://bhattaraibvk.com.np/assets/images/bibek_portrait.png</image:loc>
-      <image:title>Bibek Bhattarai (Bvk Bhattarai) - Software Developer</image:title>
-      <image:caption>Bibek Bhattarai portrait - Software Developer, Health IT &amp; Strategic Business Executive</image:caption>
+      <image:title>Bibek Bhattarai (Bvk Bhattarai) - Software Developer Portrait</image:title>
+      <image:caption>Bibek Bhattarai (also known as Bvk Bhattarai) official portrait photo - Software Developer, Mobile Engineer and Health IT Researcher in Nepal</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://bhattaraibvk.com.np/assets/images/bibek_standing.jpg</image:loc>
@@ -19,23 +19,50 @@
     <image:image>
       <image:loc>https://bhattaraibvk.com.np/assets/images/products/machhamart_banner.png</image:loc>
       <image:title>Machhamart - Google Play App by Bibek Bhattarai</image:title>
-      <image:caption>Machhamart aquaculture marketplace mobile application</image:caption>
+      <image:caption>Machhamart aquaculture marketplace mobile application published on Google Play</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://bhattaraibvk.com.np/assets/images/products/icon_machhamart.png</image:loc>
       <image:title>Machhamart App Icon</image:title>
     </image:image>
     <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/products/app_feature_graphic.png</image:loc>
+      <image:title>Android Health - Diagnostics App by Bibek Bhattarai</image:title>
+      <image:caption>Android Health clinical vitals monitoring platform</image:caption>
+    </image:image>
+    <image:image>
       <image:loc>https://bhattaraibvk.com.np/assets/images/products/icon_android_health.png</image:loc>
       <image:title>Android Health App Icon</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/products/search_everything_banner.png</image:loc>
+      <image:title>Search Everything - System Indexer App by Bibek Bhattarai</image:title>
+      <image:caption>Search Everything instant device search utility</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://bhattaraibvk.com.np/assets/images/products/icon_search_everything.png</image:loc>
       <image:title>Search Everything App Icon</image:title>
     </image:image>
     <image:image>
+      <image:loc>https://bhattaraibvk.com.np/assets/images/products/3d_ms_trader_banner.png</image:loc>
+      <image:title>3D MS Trader - FinTech App by Bibek Bhattarai</image:title>
+      <image:caption>3D MS Trader algorithmic market analytics app</image:caption>
+    </image:image>
+    <image:image>
       <image:loc>https://bhattaraibvk.com.np/assets/images/products/icon_3d_ms_trader.png</image:loc>
       <image:title>3D MS Trader App Icon</image:title>
     </image:image>
+  </url>
+  <url>
+    <loc>https://bhattaraibvk.com.np/llms.txt</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bhattaraibvk.com.np/llms-full.txt</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

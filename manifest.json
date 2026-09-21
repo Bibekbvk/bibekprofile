@@ -1,11 +1,11 @@
 {
-    "name": "Bibek Bhattarai | Portfolio & Journal",
+    "name": "Bibek Bhattarai (Bvk Bhattarai) | Software Developer",
     "short_name": "Bibek Bhattarai",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#121212",
     "theme_color": "#C5A059",
-    "description": "Personal portfolio and dynamic research journal of Bibek Bhattarai.",
+    "description": "Official portfolio and engineering showcase of Bibek Bhattarai (Bvk Bhattarai) - Software Developer, Mobile App Engineer, Health IT Researcher, and Creator of Machhamart.",
     "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
