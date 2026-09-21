@@ -136,6 +136,15 @@ class _HeroNarrative extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 6),
+                      Text(
+                        '(Bvk Bhattarai)',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.primaryAccent,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
                       const Icon(
                         Icons.verified,
                         color: AppTheme.primaryAccent,
