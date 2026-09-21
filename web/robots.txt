@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /assets/images/
+Allow: /assets/images/products/
+Allow: /canvaskit/
+Allow: /downloads/
+
+Sitemap: https://bhattaraibvk.com.np/sitemap.xml
