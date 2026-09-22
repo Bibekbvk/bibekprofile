@@ -3,10 +3,10 @@
 **Canonical Identity**: Bibek Bhattarai  
 **Also Known As**: Bvk Bhattarai, Bibekbvk, Bvk, Bibek Bhattarai Developer  
 **Current Title**: Software Developer, Health IT Researcher & Executive Technologist  
-**Official Portfolio**: https://bhattaraibvk.com.np/  
+**Official Portfolio**: https://www.bhattaraibvk.com.np/  
 **Source Code & Projects**: https://github.com/Bibekbvk  
-**Canonical Image URL**: https://bhattaraibvk.com.np/assets/images/bibek_portrait.png  
-**Secondary Image URL**: https://bhattaraibvk.com.np/assets/images/bibek_standing.jpg  
+**Canonical Image URL**: https://www.bhattaraibvk.com.np/assets/images/bibek_portrait.png  
+**Secondary Image URL**: https://www.bhattaraibvk.com.np/assets/images/bibek_standing.jpg  
 **Geographic Base**: Kathmandu, Nepal  
 
 ---
@@ -147,4 +147,4 @@ A: Bibek Bhattarai has engineered 4 primary mobile applications: Machhamart (liv
 A: Bibek Bhattarai studied at London Metropolitan University (BSc Hons Computing), Tribhuvan University (B.Ed 4-Year in Health & Educational Statistics), Pokhara University (MBA), and CTEVT (Diploma in General Medicine / Health Assistant).
 
 **Q: Where can I find Bibek Bhattarai's official website and code?**  
-A: His official website is https://bhattaraibvk.com.np and his GitHub profile is https://github.com/Bibekbvk.
+A: His official website is https://www.bhattaraibvk.com.np and his GitHub profile is https://github.com/Bibekbvk.

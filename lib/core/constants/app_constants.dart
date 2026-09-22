@@ -14,8 +14,8 @@ class AppConstants {
   static const String supabaseAnonKey = 'your-supabase-anon-key';
 
   // Professional & Social Profile Links
-  static const String websiteUrl = 'https://bhattaraibvk.com.np';
-  static const String websiteLabel = 'bhattaraibvk.com.np';
+  static const String websiteUrl = 'https://www.bhattaraibvk.com.np';
+  static const String websiteLabel = 'www.bhattaraibvk.com.np';
   static const String linkedinUrl = 'https://linkedin.com/in/bhattaraibvk';
   static const String githubUrl = 'https://github.com/Bibekbvk';
   static const String email = 'contact@bhattaraibvk.com.np';

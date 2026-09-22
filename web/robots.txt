@@ -45,4 +45,4 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-Sitemap: https://bhattaraibvk.com.np/sitemap.xml
+Sitemap: https://www.bhattaraibvk.com.np/sitemap.xml
