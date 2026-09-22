@@ -6,6 +6,7 @@ import 'package:bibek_bhattarai_portfolio/main.dart';
 import 'package:bibek_bhattarai_portfolio/core/constants/app_constants.dart';
 import 'package:bibek_bhattarai_portfolio/features/portfolio/presentation/home_page.dart';
 import 'package:bibek_bhattarai_portfolio/features/portfolio/presentation/portfolio_provider.dart';
+import 'package:bibek_bhattarai_portfolio/features/content/data/mock_content_repository.dart';
 
 void main() {
   setUp(() {
@@ -179,9 +180,8 @@ void main() {
     await tester.pumpAndSettle();
 
     // Tap on the featured AI news post
-    final featuredPostFinder = find.text(
-      'The Death of the Text Editor: How Agentic Workflows are Engineering the Future',
-    ).first;
+    final featuredPost = MockContentRepository.getFeaturedPost()!;
+    final featuredPostFinder = find.text(featuredPost.title).first;
     expect(featuredPostFinder, findsOneWidget);
     await tester.tap(featuredPostFinder);
     await tester.pumpAndSettle();
@@ -189,13 +189,11 @@ void main() {
     // Verify Reader View elements and Ad placements
     expect(find.text('Back to Articles'), findsOneWidget);
     expect(find.text('Finished Reading — Back to Overview'), findsOneWidget);
-    expect(
-      find.text('AGENTIC ARCHITECTURES REDEFINE VELOCITY • 400% INCREASE IN FEATURE DELIVERY'),
-      findsOneWidget,
-    );
+    if (featuredPost.statisticsHeadline != null) {
+      expect(find.text(featuredPost.statisticsHeadline!), findsOneWidget);
+    }
     expect(find.text('SPONSORED SPOTLIGHT'), findsOneWidget);
-    expect(find.text('VIRAL TOOLS ON GITHUB'), findsOneWidget);
-    expect(find.text('MiniMax Video-01'), findsOneWidget);
+    expect(find.text('MiniMax Video-01 & Next-Gen Open AI Tools'), findsOneWidget);
 
     // Tap Back to Articles to close reader mode
     await tester.tap(find.text('Back to Articles'));

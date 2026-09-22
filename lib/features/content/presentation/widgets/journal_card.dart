@@ -26,7 +26,7 @@ class _JournalCardState extends State<JournalCard> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<PortfolioProvider>();
+    final provider = context.watch<PortfolioProvider>();
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -184,7 +184,7 @@ class _JournalCardState extends State<JournalCard> {
 
               // Title
               Text(
-                widget.post.title,
+                widget.post.displayTitle(provider.isNepali),
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -233,7 +233,7 @@ class _JournalCardState extends State<JournalCard> {
 
               // Excerpt
               Text(
-                widget.post.excerpt,
+                widget.post.displayExcerpt(provider.isNepali),
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,

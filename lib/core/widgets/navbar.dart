@@ -109,7 +109,32 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                             onTap: () => provider.setSection(section),
                           );
                         }),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 4),
+                        // Desktop Language Switcher
+                        InkWell(
+                          onTap: () => provider.toggleLanguage(),
+                          borderRadius: BorderRadius.circular(14),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: AppTheme.surfaceElevated,
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: provider.isNepali ? AppTheme.primaryAccent : AppTheme.border,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: Text(
+                              provider.isNepali ? '🇳🇵 ने' : '🇬🇧 EN',
+                              style: GoogleFonts.inter(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: provider.isNepali ? AppTheme.primaryAccent : AppTheme.textPrimary,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
                         IconButton(
                           icon: Icon(
                             provider.isAdminAuthenticated
@@ -136,17 +161,45 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 )
               else
-                // Mobile Menu Toggle
-                IconButton(
-                  icon: Icon(
-                    provider.isMobileDrawerOpen
-                        ? Icons.close_rounded
-                        : Icons.menu_rounded,
-                    color: AppTheme.textPrimary,
-                    size: 24,
-                  ),
-                  onPressed: () => provider.toggleMobileDrawer(),
-                  tooltip: 'Toggle Navigation Menu',
+                // Mobile Menu Toggle & Language Switcher
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () => provider.toggleLanguage(),
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppTheme.surfaceElevated,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: provider.isNepali ? AppTheme.primaryAccent : AppTheme.border,
+                          ),
+                        ),
+                        child: Text(
+                          provider.isNepali ? '🇳🇵 ने' : '🇬🇧 EN',
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: provider.isNepali ? AppTheme.primaryAccent : AppTheme.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    IconButton(
+                      icon: Icon(
+                        provider.isMobileDrawerOpen
+                            ? Icons.close_rounded
+                            : Icons.menu_rounded,
+                        color: AppTheme.textPrimary,
+                        size: 24,
+                      ),
+                      onPressed: () => provider.toggleMobileDrawer(),
+                      tooltip: 'Toggle Navigation Menu',
+                    ),
+                  ],
                 ),
             ],
           ),
@@ -188,13 +241,13 @@ class _NavLinkItemState extends State<_NavLinkItem> {
         onTap: widget.onTap,
         behavior: HitTestBehavior.opaque,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          margin: const EdgeInsets.symmetric(horizontal: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          margin: EdgeInsets.zero,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                widget.section.label,
+                widget.section.getLocalizedLabel(context.watch<PortfolioProvider>().isNepali),
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: widget.isActive ? FontWeight.w600 : FontWeight.w500,
@@ -268,7 +321,7 @@ class MobileNavMenu extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      section.label,
+                      section.getLocalizedLabel(provider.isNepali),
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,

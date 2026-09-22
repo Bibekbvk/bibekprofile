@@ -36,27 +36,29 @@ class ContentView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header Controls: Filter Pills
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // Header Controls: Filter Pills & Language Switcher
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 16,
+                runSpacing: 14,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'FILTER AI & TECH NEWS',
-                          style: AppTheme.codeStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.primaryAccent,
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        provider.isNepali ? 'समाचार तथा प्रविधि विश्लेषण' : 'FILTER AI & TECH NEWS',
+                        style: AppTheme.codeStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.primaryAccent,
                         ),
-                        const SizedBox(height: 12),
-                        const CategoryFilterPills(),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 12),
+                      const CategoryFilterPills(),
+                    ],
                   ),
+                  _buildLanguageToggle(provider),
                 ],
               ),
 
@@ -140,6 +142,60 @@ class ContentView extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageToggle(PortfolioProvider provider) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceElevated,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.border),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildLangBtn(
+            label: '🇬🇧 English',
+            isActive: !provider.isNepali,
+            onTap: () => provider.toggleLanguage(false),
+          ),
+          const SizedBox(width: 4),
+          _buildLangBtn(
+            label: '🇳🇵 नेपाली',
+            isActive: provider.isNepali,
+            onTap: () => provider.toggleLanguage(true),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLangBtn({
+    required String label,
+    required bool isActive,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isActive ? AppTheme.primaryAccent : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 12,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+            color: isActive ? AppTheme.background : AppTheme.textSecondary,
+          ),
+        ),
       ),
     );
   }

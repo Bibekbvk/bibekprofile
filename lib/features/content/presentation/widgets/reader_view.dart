@@ -43,7 +43,7 @@ class ReaderView extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () => provider.closeReader(),
                     icon: const Icon(Icons.arrow_back_rounded, size: 16),
-                    label: const Text('Back to Articles'),
+                    label: Text(provider.isNepali ? 'पछाडि जानुहोस्' : 'Back to Articles'),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,
@@ -55,21 +55,27 @@ class ReaderView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: AppTheme.surfaceElevated,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: AppTheme.border, width: 1.0),
-                    ),
-                    child: Text(
-                      post.category.toUpperCase(),
-                      style: AppTheme.codeStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: AppTheme.primaryAccent,
+                  Row(
+                    children: [
+                      _buildReaderLanguageToggle(provider),
+                      const SizedBox(width: 12),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: AppTheme.surfaceElevated,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: AppTheme.border, width: 1.0),
+                        ),
+                        child: Text(
+                          post.category.toUpperCase(),
+                          style: AppTheme.codeStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.primaryAccent,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ).animate().fadeIn(duration: 300.ms),
@@ -106,8 +112,10 @@ class ReaderView extends StatelessWidget {
     PortfolioProvider provider,
     double screenWidth,
   ) {
+    final activeTitle = post.displayTitle(provider.isNepali);
+    final activeContent = post.displayContent(provider.isNepali);
     // Split markdown content around middle section to insert in-article ad
-    final contentParts = _splitMarkdownForMidArticleAd(post.contentMarkdown);
+    final contentParts = _splitMarkdownForMidArticleAd(activeContent);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,13 +135,13 @@ class ReaderView extends StatelessWidget {
 
         // Editorial Headline
         Text(
-          post.title,
+          activeTitle,
           style: GoogleFonts.plusJakartaSans(
-            fontSize: screenWidth < 600 ? 30 : 38,
+            fontSize: screenWidth < 600 ? 28 : 36,
             fontWeight: FontWeight.w800,
             color: AppTheme.textPrimary,
-            letterSpacing: -1.0,
-            height: 1.2,
+            letterSpacing: -0.8,
+            height: 1.25,
           ),
         ).animate().fadeIn(delay: 150.ms, duration: 400.ms),
 
@@ -362,7 +370,11 @@ class ReaderView extends StatelessWidget {
           child: OutlinedButton.icon(
             onPressed: () => provider.closeReader(),
             icon: const Icon(Icons.arrow_upward_rounded, size: 16),
-            label: const Text('Finished Reading — Back to Overview'),
+            label: Text(
+              provider.isNepali
+                  ? 'पढ्न सम्पन्न भयो — समाचारमा फर्कनुहोस्'
+                  : 'Finished Reading — Back to Overview',
+            ),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(
                 horizontal: 24,
@@ -590,6 +602,60 @@ class ReaderView extends StatelessWidget {
       ];
     }
     return [markdown, ''];
+  }
+
+  Widget _buildReaderLanguageToggle(PortfolioProvider provider) {
+    return Container(
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceElevated,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.primaryAccent.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildReaderLangBtn(
+            label: '🇬🇧 EN',
+            isActive: !provider.isNepali,
+            onTap: () => provider.toggleLanguage(false),
+          ),
+          const SizedBox(width: 3),
+          _buildReaderLangBtn(
+            label: '🇳🇵 ने',
+            isActive: provider.isNepali,
+            onTap: () => provider.toggleLanguage(true),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReaderLangBtn({
+    required String label,
+    required bool isActive,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: isActive ? AppTheme.primaryAccent : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 11,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+            color: isActive ? AppTheme.background : AppTheme.textSecondary,
+          ),
+        ),
+      ),
+    );
   }
 }
 

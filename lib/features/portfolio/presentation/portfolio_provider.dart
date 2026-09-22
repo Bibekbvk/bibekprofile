@@ -32,6 +32,26 @@ enum PortfolioSection {
         return 'Admin';
     }
   }
+
+  String getLocalizedLabel(bool isNepali) {
+    if (!isNepali) return label;
+    switch (this) {
+      case PortfolioSection.home:
+        return 'गृहपृष्ठ';
+      case PortfolioSection.journals:
+        return 'समाचार';
+      case PortfolioSection.education:
+        return 'शिक्षा';
+      case PortfolioSection.products:
+        return 'उत्पादनहरू';
+      case PortfolioSection.experience:
+        return 'अनुभव';
+      case PortfolioSection.contact:
+        return 'सम्पर्क';
+      case PortfolioSection.admin:
+        return 'एडमिन';
+    }
+  }
 }
 
 class PortfolioProvider extends ChangeNotifier {
@@ -40,6 +60,7 @@ class PortfolioProvider extends ChangeNotifier {
   String _selectedCategory = 'All';
   JournalPost? _activePost;
   bool _isAdminAuthenticated = false;
+  bool _isNepali = false;
 
   // Real-time Analytics & Revenue Telemetry
   final AnalyticsRepository _analyticsRepository = AnalyticsRepository();
@@ -62,7 +83,13 @@ class PortfolioProvider extends ChangeNotifier {
   JournalPost? get activePost => _activePost;
   bool get isReaderMode => _activePost != null;
   bool get isAdminAuthenticated => _isAdminAuthenticated;
+  bool get isNepali => _isNepali;
   List<Map<String, String>> get inquiries => List.unmodifiable(_inquiries);
+
+  void toggleLanguage([bool? toNepali]) {
+    _isNepali = toNepali ?? !_isNepali;
+    notifyListeners();
+  }
 
   AnalyticsRepository get analytics => _analyticsRepository;
   AnalyticsTimeFilter get analyticsTimeFilter => _analyticsTimeFilter;
