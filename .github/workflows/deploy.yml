@@ -37,5 +37,5 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          npx wrangler pages project list || true
-          npx wrangler pages deploy build/web --project-name=bibekprofile --commit-dirty=true
+          npx wrangler pages project create bibekprofile --production-branch=source || true
+          npx wrangler pages deploy build/web --project-name=bibekprofile --branch=source --commit-dirty=true
