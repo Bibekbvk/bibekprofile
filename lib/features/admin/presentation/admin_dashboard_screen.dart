@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constants/app_constants.dart';
@@ -7,6 +8,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../content/data/mock_content_repository.dart';
 import '../../content/domain/models/journal_post.dart';
 import '../../portfolio/presentation/portfolio_provider.dart';
+import '../domain/models/analytics_model.dart';
 
 /// Full-featured Executive Administration Dashboard for managing AI news automation,
 /// reviewing contact inquiries, and publishing custom articles.
@@ -440,11 +442,21 @@ Adopt open protocol architectures now to future-proof your development toolchain
               const SizedBox(width: 14),
               Expanded(
                 child: _buildMetricTile(
-                  icon: Icons.newspaper_rounded,
-                  label: 'PUBLISHED ARTICLES',
-                  value: '${MockContentRepository.allPosts.length}',
-                  sub: 'Live in News Section',
+                  icon: Icons.show_chart_rounded,
+                  label: 'TOTAL PLATFORM TRAFFIC',
+                  value: '${provider.analyticsReport.totalVisits}',
+                  sub: '${provider.analyticsReport.totalArticleViews} Article Reads',
                   accentColor: Colors.blueAccent,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: _buildMetricTile(
+                  icon: Icons.monetization_on_rounded,
+                  label: 'ESTIMATED AD REVENUE',
+                  value: '\$${provider.analyticsReport.totalRevenueUsd}',
+                  sub: '${provider.analyticsReport.totalAdImpressions} Ad Impressions',
+                  accentColor: Colors.greenAccent,
                 ),
               ),
               const SizedBox(width: 14),
@@ -467,9 +479,11 @@ Adopt open protocol architectures now to future-proof your development toolchain
             children: [
               _buildTabButton(0, 'AI News Engine', Icons.smart_toy_rounded),
               const SizedBox(width: 8),
-              _buildTabButton(1, 'Inquiries (${provider.inquiries.length})', Icons.inbox_rounded),
+              _buildTabButton(1, 'Analytics & Revenue', Icons.insights_rounded),
               const SizedBox(width: 8),
-              _buildTabButton(2, 'Cloud & DNS Ops', Icons.cloud_done_rounded),
+              _buildTabButton(2, 'Inquiries (${provider.inquiries.length})', Icons.inbox_rounded),
+              const SizedBox(width: 8),
+              _buildTabButton(3, 'Cloud & DNS Ops', Icons.cloud_done_rounded),
             ],
           ),
 
@@ -479,6 +493,8 @@ Adopt open protocol architectures now to future-proof your development toolchain
           if (_selectedTab == 0)
             _buildAiNewsTab(context, provider)
           else if (_selectedTab == 1)
+            _buildAnalyticsTab(context, provider)
+          else if (_selectedTab == 2)
             _buildInquiriesTab(context, provider)
           else
             _buildCloudOpsTab(context),
@@ -546,14 +562,18 @@ Adopt open protocol architectures now to future-proof your development toolchain
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                label,
-                style: AppTheme.codeStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.textSecondary,
+              Expanded(
+                child: Text(
+                  label,
+                  style: AppTheme.codeStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.textSecondary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: 8),
               Icon(icon, color: accentColor, size: 20),
             ],
           ),
@@ -1363,6 +1383,978 @@ Adopt open protocol architectures now to future-proof your development toolchain
         borderSide: const BorderSide(color: AppTheme.primaryAccent, width: 1.5),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+    );
+  }
+
+  Widget _buildAnalyticsTab(BuildContext context, PortfolioProvider provider) {
+    final report = provider.analyticsReport;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Analytics Header & Period Filter Toolbar
+        Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: AppTheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppTheme.border, width: 1.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const BoxDecoration(
+                                color: Colors.greenAccent,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'TRAFFIC & MONETIZATION INTELLIGENCE',
+                              style: AppTheme.codeStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.primaryAccent,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'Real-Time Readership, Ad Placements & Revenue Reporting',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: isDesktop ? 20 : 16,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          provider.simulateTrafficPulse();
+                          ScaffoldMessenger.of(context).clearSnackBars();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: AppTheme.primaryAccent,
+                              content: Text(
+                                '⚡ Simulated real-time organic reader burst: +45 to 80 views, ad impressions & telemetry logged!',
+                                style: GoogleFonts.inter(
+                                  color: AppTheme.background,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.bolt_rounded, size: 16),
+                        label: const Text('Simulate Traffic Pulse'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.primaryAccent,
+                          foregroundColor: AppTheme.background,
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          textStyle: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      OutlinedButton.icon(
+                        onPressed: () => _showExportReportDialog(context, provider),
+                        icon: const Icon(Icons.file_download_rounded, size: 16),
+                        label: const Text('Export Audit Report'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppTheme.textPrimary,
+                          side: const BorderSide(color: AppTheme.border),
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          textStyle: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 18),
+              const Divider(color: AppTheme.border),
+              const SizedBox(height: 14),
+
+              // Filter Time Horizon
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(
+                    'REPORTING TIMEFRAME:',
+                    style: AppTheme.codeStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  ...AnalyticsTimeFilter.values.map((filter) {
+                    final isSelected = provider.analyticsTimeFilter == filter;
+                    return InkWell(
+                      onTap: () => provider.setAnalyticsTimeFilter(filter),
+                      borderRadius: BorderRadius.circular(6),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? AppTheme.primaryAccent.withValues(alpha: 0.2)
+                              : AppTheme.surfaceElevated,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: isSelected ? AppTheme.primaryAccent : AppTheme.border,
+                            width: 1.0,
+                          ),
+                        ),
+                        child: Text(
+                          filter.label,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                            color: isSelected ? AppTheme.primaryAccent : AppTheme.textSecondary,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        // 4 KPI Summary Cards
+        Row(
+          children: [
+            Expanded(
+              child: _buildKpiCard(
+                icon: Icons.people_alt_rounded,
+                title: 'TOTAL PLATFORM VISITS',
+                value: '${report.totalVisits}',
+                sub: '+24.8% vs previous period',
+                subColor: Colors.greenAccent,
+                accentColor: Colors.blueAccent,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: _buildKpiCard(
+                icon: Icons.menu_book_rounded,
+                title: 'ARTICLE READS / VIEWS',
+                value: '${report.totalArticleViews}',
+                sub: 'Across all technical news',
+                subColor: AppTheme.textSecondary,
+                accentColor: AppTheme.primaryAccent,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: _buildKpiCard(
+                icon: Icons.ads_click_rounded,
+                title: 'TOTAL AD IMPRESSIONS',
+                value: '${report.totalAdImpressions}',
+                sub: '${report.totalAdClicks} Clicks • ${report.overallCtr}% CTR',
+                subColor: Colors.amberAccent,
+                accentColor: Colors.amberAccent,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: _buildKpiCard(
+                icon: Icons.payments_rounded,
+                title: 'ESTIMATED AD REVENUE',
+                value: '\$${report.totalRevenueUsd}',
+                sub: '≈ NPR ${report.totalRevenueNpr.toStringAsFixed(0)} (eCPM \$${report.averageEcpm.toStringAsFixed(2)})',
+                subColor: Colors.greenAccent,
+                accentColor: Colors.greenAccent,
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 24),
+
+        // Weekly Views & Revenue Trend Bar Chart
+        Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: AppTheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppTheme.border, width: 1.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'DAILY TRAFFIC & EARNINGS VELOCITY',
+                          style: AppTheme.codeStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.primaryAccent,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Weekly Day-by-Day Volume & Revenue Trajectory',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Row(
+                    children: [
+                      _buildLegendDot(AppTheme.primaryAccent, 'Daily Pageviews'),
+                      const SizedBox(width: 16),
+                      _buildLegendDot(Colors.greenAccent, 'Estimated Revenue (\$)'),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              _buildWeeklyChart(report.dailyTrends),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
+        // Ad Inventory & Performance Breakdown (Which Ads Displayed)
+        Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: AppTheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppTheme.border, width: 1.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'AD PLACEMENT INVENTORY & UNIT PERFORMANCE',
+                          style: AppTheme.codeStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.primaryAccent,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Which Ads Displayed, Impressions, Clicks, and Revenue per Unit',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.3)),
+                    ),
+                    child: Text(
+                      '3 MONETIZATION SLOTS ACTIVE',
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.greenAccent,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Column(
+                children: report.adUnits.map((ad) => _buildAdUnitCard(ad)).toList(),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
+        // Article Traffic & Revenue Leaderboard
+        Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: AppTheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppTheme.border, width: 1.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'CONTENT AUDIT & ARTICLE TRAFFIC LEADERBOARD',
+                          style: AppTheme.codeStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.primaryAccent,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Pageviews, Ad Displays, and Revenue Contribution per Article',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    '${report.articleStats.length} Total Articles Indexed',
+                    style: GoogleFonts.inter(fontSize: 12, color: AppTheme.textSecondary),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 18),
+              _buildArticleLeaderboard(report.articleStats),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
+        // Google AdSense Readiness & Verification Summary
+        _buildAdSenseGuidanceCard(),
+      ],
+    );
+  }
+
+  Widget _buildKpiCard({
+    required IconData icon,
+    required String title,
+    required String value,
+    required String sub,
+    required Color subColor,
+    required Color accentColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.border, width: 1.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTheme.codeStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.textSecondary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: accentColor.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Icon(icon, color: accentColor, size: 16),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            value,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+              color: AppTheme.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            sub,
+            style: GoogleFonts.inter(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: subColor,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeeklyChart(List<DailyTrendStat> dailyTrends) {
+    if (dailyTrends.isEmpty) return const SizedBox.shrink();
+    final maxViews = dailyTrends.map((d) => d.views).reduce((a, b) => a > b ? a : b);
+
+    return SizedBox(
+      height: 210,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: dailyTrends.map((stat) {
+          final heightRatio = maxViews > 0 ? (stat.views / maxViews) : 0.2;
+          final barHeight = 20.0 + (heightRatio * 80.0);
+
+          return Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    '\$${stat.revenue.toStringAsFixed(2)}',
+                    style: AppTheme.codeStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.greenAccent,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    height: barHeight,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          AppTheme.primaryAccent,
+                          AppTheme.primaryAccent.withValues(alpha: 0.35),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    stat.day,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textPrimary,
+                    ),
+                  ),
+                  Text(
+                    '${stat.views} views',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      color: AppTheme.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildLegendDot(Color color, String label) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: GoogleFonts.inter(fontSize: 12, color: AppTheme.textSecondary),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAdUnitCard(AdUnitStat ad) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceElevated,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppTheme.border),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isNarrow = constraints.maxWidth < 700;
+
+          final infoSection = Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryAccent.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.view_compact_rounded, color: AppTheme.primaryAccent, size: 22),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            ad.name,
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.textPrimary,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.greenAccent.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.3)),
+                          ),
+                          child: Text(
+                            ad.status,
+                            style: GoogleFonts.inter(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.greenAccent,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      '${ad.placement} • ${ad.format}',
+                      style: GoogleFonts.inter(fontSize: 11, color: AppTheme.textSecondary),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+
+          final statsRow = SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildStatPill('DISPLAYS', '${ad.impressions}', Colors.blueAccent),
+                const SizedBox(width: 18),
+                _buildStatPill('CLICKS', '${ad.clicks}', Colors.amberAccent),
+                const SizedBox(width: 18),
+                _buildStatPill('CTR', '${ad.ctr.toStringAsFixed(2)}%', Colors.cyanAccent),
+                const SizedBox(width: 18),
+                _buildStatPill('eCPM', '\$${ad.eCpm.toStringAsFixed(2)}', AppTheme.primaryAccent),
+                const SizedBox(width: 18),
+                _buildStatPill('REVENUE', '\$${ad.revenue.toStringAsFixed(2)}', Colors.greenAccent),
+              ],
+            ),
+          );
+
+          if (isNarrow) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                infoSection,
+                const SizedBox(height: 14),
+                statsRow,
+              ],
+            );
+          }
+
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(flex: 5, child: infoSection),
+              const SizedBox(width: 16),
+              statsRow,
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildStatPill(String label, String value, Color color) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          label,
+          style: AppTheme.codeStyle(
+            fontSize: 9,
+            fontWeight: FontWeight.w700,
+            color: AppTheme.textSecondary,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          value,
+          style: GoogleFonts.inter(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: color,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildArticleLeaderboard(List<ArticleTrafficStat> articles) {
+    return Column(
+      children: articles.map((a) {
+        final rank = articles.indexOf(a) + 1;
+        return Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceElevated,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppTheme.border),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 26,
+                height: 26,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: rank <= 3 ? AppTheme.primaryAccent : AppTheme.surface,
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  '$rank',
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: rank <= 3 ? AppTheme.background : AppTheme.textSecondary,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                flex: 5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      a.title,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textPrimary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      a.category,
+                      style: GoogleFonts.inter(fontSize: 11, color: AppTheme.textSecondary),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 4,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('READERS', style: AppTheme.codeStyle(fontSize: 9, color: AppTheme.textSecondary)),
+                        Text('${a.views}', style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('AD DISPLAYS', style: AppTheme.codeStyle(fontSize: 9, color: AppTheme.textSecondary)),
+                        Text('${a.adImpressions}', style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.blueAccent)),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('REVENUE', style: AppTheme.codeStyle(fontSize: 9, color: AppTheme.textSecondary)),
+                        Text('\$${a.revenue}', style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.greenAccent)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppTheme.surface,
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: AppTheme.border),
+                ),
+                child: Text(
+                  a.trendBadge,
+                  style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w600, color: AppTheme.textPrimary),
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildAdSenseGuidanceCard() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.primaryAccent.withValues(alpha: 0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.verified_rounded, color: Colors.greenAccent, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                'GOOGLE ADSENSE MONETIZATION COMPLIANCE CHECKLIST',
+                style: AppTheme.codeStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: AppTheme.primaryAccent,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Your site is built with modern high-RPM advertising architecture. The required Privacy Policy is indexed and live, and both in-article and sticky sidebar ad slots are operational.',
+            style: GoogleFonts.inter(fontSize: 13, color: AppTheme.textSecondary, height: 1.5),
+          ),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              _buildComplianceBadge('Privacy Policy Live', 'https://www.bhattaraibvk.com.np/privacy-policy.html', true),
+              _buildComplianceBadge('AdSense Ready', 'web/index.html tag slot available', true),
+              _buildComplianceBadge('Estimated Tech eCPM', '\$3.50 – \$6.20 USD / 1000 Impr.', true),
+              _buildComplianceBadge('Automated Daily Articles', '2x Daily via Gemini 1.5 Flash', true),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildComplianceBadge(String label, String sub, bool isDone) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceElevated,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppTheme.border),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isDone ? Icons.check_circle_rounded : Icons.pending_rounded,
+            color: isDone ? Colors.greenAccent : Colors.amberAccent,
+            size: 16,
+          ),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+              Text(sub, style: GoogleFonts.inter(fontSize: 10, color: AppTheme.textSecondary)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showExportReportDialog(BuildContext context, PortfolioProvider provider) {
+    final csvData = provider.analytics.exportCsvReport(provider.analyticsTimeFilter);
+    final jsonData = provider.analytics.exportJsonReport(provider.analyticsTimeFilter);
+    bool showJson = false;
+
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            final activeData = showJson ? jsonData : csvData;
+            return AlertDialog(
+              backgroundColor: AppTheme.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: const BorderSide(color: AppTheme.border),
+              ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Export Analytics & Revenue Report',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.textPrimary,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () => setModalState(() => showJson = false),
+                        child: Text(
+                          'CSV',
+                          style: TextStyle(
+                            color: !showJson ? AppTheme.primaryAccent : AppTheme.textSecondary,
+                            fontWeight: !showJson ? FontWeight.w700 : FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => setModalState(() => showJson = true),
+                        child: Text(
+                          'JSON',
+                          style: TextStyle(
+                            color: showJson ? AppTheme.primaryAccent : AppTheme.textSecondary,
+                            fontWeight: showJson ? FontWeight.w700 : FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              content: SizedBox(
+                width: 650,
+                height: 380,
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceElevated,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppTheme.border),
+                  ),
+                  child: SingleChildScrollView(
+                    child: SelectableText(
+                      activeData,
+                      style: AppTheme.codeStyle(fontSize: 11, color: AppTheme.textPrimary),
+                    ),
+                  ),
+                ),
+              ),
+              actions: [
+                OutlinedButton.icon(
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: activeData));
+                    Navigator.of(ctx).pop();
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: AppTheme.primaryAccent,
+                        content: Text(
+                          '📋 ${showJson ? "JSON" : "CSV"} report copied to clipboard!',
+                          style: GoogleFonts.inter(color: AppTheme.background, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.copy_rounded, size: 16),
+                  label: const Text('Copy to Clipboard'),
+                  style: OutlinedButton.styleFrom(foregroundColor: AppTheme.primaryAccent),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryAccent,
+                    foregroundColor: AppTheme.background,
+                  ),
+                  child: const Text('Close'),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

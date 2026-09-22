@@ -432,4 +432,76 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets('Admin Dashboard displays Analytics & Ad Revenue reports, ad slots, and simulations',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Directly authenticate to admin section
+    final context = tester.element(find.byType(HomePage));
+    final provider = Provider.of<PortfolioProvider>(context, listen: false);
+    provider.setSection(PortfolioSection.admin);
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Enter username (e.g. admin)'),
+      'admin',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Enter administrative password'),
+      'special4u@A',
+    );
+    await tester.tap(find.text('Authenticate & Open Dashboard'));
+    await tester.pumpAndSettle();
+
+    // Verify Executive Overview KPI tiles
+    expect(find.text('TOTAL PLATFORM TRAFFIC'), findsOneWidget);
+    expect(find.text('ESTIMATED AD REVENUE'), findsOneWidget);
+
+    // Switch to Analytics & Revenue tab
+    final analyticsTab = find.text('Analytics & Revenue');
+    expect(analyticsTab, findsOneWidget);
+    await tester.tap(analyticsTab);
+    await tester.pumpAndSettle();
+
+    // Verify Analytics Section elements
+    expect(find.text('TRAFFIC & MONETIZATION INTELLIGENCE'), findsOneWidget);
+    expect(find.text('DAILY TRAFFIC & EARNINGS VELOCITY'), findsOneWidget);
+    expect(find.text('AD PLACEMENT INVENTORY & UNIT PERFORMANCE'), findsOneWidget);
+    expect(find.text('Mid-Article In-Stream Banner'), findsOneWidget);
+    expect(find.text('Desktop Sticky Sidebar Unit'), findsOneWidget);
+    expect(find.text('Google Auto-Ads Feed Slot'), findsOneWidget);
+    expect(find.text('CONTENT AUDIT & ARTICLE TRAFFIC LEADERBOARD'), findsOneWidget);
+
+    // Test Simulate Traffic Pulse
+    final pulseBtn = find.text('Simulate Traffic Pulse');
+    expect(pulseBtn, findsOneWidget);
+    await tester.tap(pulseBtn);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.textContaining('Simulated real-time organic reader burst'),
+      findsOneWidget,
+    );
+
+    // Test Export Audit Report dialog
+    final exportBtn = find.text('Export Audit Report');
+    expect(exportBtn, findsOneWidget);
+    await tester.tap(exportBtn);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Export Analytics & Revenue Report'), findsOneWidget);
+    expect(find.text('Close'), findsOneWidget);
+    await tester.tap(find.text('Close'));
+    await tester.pumpAndSettle();
+  });
 }
+

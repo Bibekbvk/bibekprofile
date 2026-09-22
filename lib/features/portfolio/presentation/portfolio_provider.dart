@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../content/data/mock_content_repository.dart';
 import '../../content/domain/models/journal_post.dart';
+import '../../admin/data/analytics_repository.dart';
+import '../../admin/domain/models/analytics_model.dart';
 
 /// Navigation routes/sections for Bibek Bhattarai's portfolio and journal app.
 enum PortfolioSection {
@@ -39,6 +41,10 @@ class PortfolioProvider extends ChangeNotifier {
   JournalPost? _activePost;
   bool _isAdminAuthenticated = false;
 
+  // Real-time Analytics & Revenue Telemetry
+  final AnalyticsRepository _analyticsRepository = AnalyticsRepository();
+  AnalyticsTimeFilter _analyticsTimeFilter = AnalyticsTimeFilter.weekly;
+
   // Inquiries recorded in the session
   final List<Map<String, String>> _inquiries = [
     {
@@ -57,6 +63,32 @@ class PortfolioProvider extends ChangeNotifier {
   bool get isReaderMode => _activePost != null;
   bool get isAdminAuthenticated => _isAdminAuthenticated;
   List<Map<String, String>> get inquiries => List.unmodifiable(_inquiries);
+
+  AnalyticsRepository get analytics => _analyticsRepository;
+  AnalyticsTimeFilter get analyticsTimeFilter => _analyticsTimeFilter;
+  AnalyticsReport get analyticsReport => _analyticsRepository.getReport(_analyticsTimeFilter);
+
+  void setAnalyticsTimeFilter(AnalyticsTimeFilter filter) {
+    if (_analyticsTimeFilter != filter) {
+      _analyticsTimeFilter = filter;
+      notifyListeners();
+    }
+  }
+
+  void simulateTrafficPulse() {
+    _analyticsRepository.simulateTrafficPulse();
+    notifyListeners();
+  }
+
+  void resetAnalytics() {
+    _analyticsRepository.resetTelemetry();
+    notifyListeners();
+  }
+
+  void recordAdClick(String adUnitId) {
+    _analyticsRepository.recordAdClick(adUnitId);
+    notifyListeners();
+  }
 
   void setSection(PortfolioSection section) {
     if (_currentSection != section || _activePost != null) {
@@ -77,6 +109,7 @@ class PortfolioProvider extends ChangeNotifier {
   void openPost(JournalPost post) {
     _activePost = post;
     _isMobileDrawerOpen = false;
+    _analyticsRepository.recordArticleView(post.id, post.title, post.category);
     notifyListeners();
   }
 

@@ -674,9 +674,10 @@ class _InArticleAdSlot extends StatelessWidget {
             children: [
               ElevatedButton.icon(
                 onPressed: () {
+                  context.read<PortfolioProvider>().recordAdClick('in_article_mid_banner');
                   UrlService.launch('https://github.com/trending');
                 },
-                icon: const Icon(Icons.rocket_launch_rounded, size: 15),
+                icon: const Icon(Icons.rocket_launch_rounded, size: 14),
                 label: const Text('Explore Free GitHub Repos'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryAccent,
@@ -691,6 +692,7 @@ class _InArticleAdSlot extends StatelessWidget {
               const SizedBox(width: 10),
               OutlinedButton(
                 onPressed: () {
+                  context.read<PortfolioProvider>().recordAdClick('in_article_mid_banner');
                   UrlService.launch(AppConstants.websiteUrl);
                 },
                 style: OutlinedButton.styleFrom(
@@ -805,6 +807,7 @@ class _DesktopArticleSidebar extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    context.read<PortfolioProvider>().recordAdClick('desktop_sidebar_rectangle');
                     UrlService.launch('https://github.com/trending');
                   },
                   style: ElevatedButton.styleFrom(
