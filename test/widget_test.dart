@@ -186,14 +186,15 @@ void main() {
     await tester.tap(featuredPostFinder);
     await tester.pumpAndSettle();
 
-    // Verify Reader View elements and Ad placements
+    // Verify Reader View elements (clean editorial mode during AdSense approval)
     expect(find.text('Back to Articles'), findsOneWidget);
     expect(find.text('Finished Reading — Back to Overview'), findsOneWidget);
     if (featuredPost.statisticsHeadline != null) {
       expect(find.text(featuredPost.statisticsHeadline!), findsOneWidget);
     }
-    expect(find.text('SPONSORED SPOTLIGHT'), findsOneWidget);
-    expect(find.text('MiniMax Video-01 & Next-Gen Open AI Tools'), findsOneWidget);
+    // Verify placeholder ads are safely hidden during review
+    expect(find.text('SPONSORED SPOTLIGHT'), findsNothing);
+    expect(find.text('VIRAL TOOLS ON GITHUB'), findsOneWidget);
 
     // Tap Back to Articles to close reader mode
     await tester.tap(find.text('Back to Articles'));

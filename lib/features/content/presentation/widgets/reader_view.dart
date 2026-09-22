@@ -9,6 +9,11 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../portfolio/presentation/portfolio_provider.dart';
 import '../../domain/models/journal_post.dart';
 
+/// Set to false during initial Google AdSense account approval review
+/// to prevent "Under Construction" or "Empty Ad Space" policy flags.
+/// Turn back to true once the AdSense account is approved.
+const bool kEnableAdSensePlacements = false;
+
 /// Distraction-free editorial reader view for articles and journals with
 /// embedded in-article ad slots, network photo support, and sticky desktop sidebar ads.
 class ReaderView extends StatelessWidget {
@@ -307,15 +312,16 @@ class ReaderView extends StatelessWidget {
         // Part 1: First Half of Article Markdown
         _buildMarkdownBody(contentParts[0], screenWidth),
 
-        const SizedBox(height: 28),
-
-        // Mid-Article Sponsored Ad Slot
-        const _InArticleAdSlot(),
-
-        const SizedBox(height: 28),
+        if (kEnableAdSensePlacements) ...[
+          const SizedBox(height: 28),
+          // Mid-Article Sponsored Ad Slot
+          const _InArticleAdSlot(),
+          const SizedBox(height: 28),
+        ],
 
         // Part 2: Second Half of Article Markdown (if present)
         if (contentParts.length > 1 && contentParts[1].trim().isNotEmpty) ...[
+          if (!kEnableAdSensePlacements) const SizedBox(height: 28),
           _buildMarkdownBody(contentParts[1], screenWidth),
           const SizedBox(height: 36),
         ],
@@ -791,9 +797,10 @@ class _DesktopArticleSidebar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Sidebar Ad Unit (300x250 standard banner compliant with Google AdSense)
-        Container(
-          padding: const EdgeInsets.all(18),
+        if (kEnableAdSensePlacements) ...[
+          // Sidebar Ad Unit (300x250 standard banner compliant with Google AdSense)
+          Container(
+            padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             color: AppTheme.surface,
             borderRadius: BorderRadius.circular(12),
@@ -896,12 +903,12 @@ class _DesktopArticleSidebar extends StatelessWidget {
             ],
           ),
         ),
-
         const SizedBox(height: 24),
+      ],
 
-        // Trending AI Tools & GitHub Repositories Widget
-        Container(
-          padding: const EdgeInsets.all(20),
+      // Trending AI Tools & GitHub Repositories Widget
+      Container(
+        padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: AppTheme.surface,
             borderRadius: BorderRadius.circular(12),
