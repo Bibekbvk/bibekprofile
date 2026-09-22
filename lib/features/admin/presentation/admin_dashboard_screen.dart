@@ -2211,11 +2211,11 @@ Adopt open protocol architectures now to future-proof your development toolchain
                   border: Border.all(color: Colors.amberAccent.withValues(alpha: 0.3)),
                 ),
                 child: Text(
-                  'STATUS: READY TO LINK ADSENSE',
+                  'STATUS: LINKED (ca-pub-3634340207015593)',
                   style: GoogleFonts.inter(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: Colors.amberAccent,
+                    color: Colors.greenAccent,
                   ),
                 ),
               ),
@@ -2223,7 +2223,7 @@ Adopt open protocol architectures now to future-proof your development toolchain
           ),
           const SizedBox(height: 14),
           Text(
-            'Important: Google Ads (ads.google.com) is for advertisers paying to display ads. To earn money from your website, you use Google AdSense (adsense.google.com). Currently, no external AdSense account is connected yet—the site is operating in Direct Sponsorship & Native Ad mode with zero dummy revenue.',
+            'Google AdSense Publisher ID ca-pub-3634340207015593 is linked to your website. Both the official Google AdSense script in web/index.html and the authorized ads.txt file have been deployed live.',
             style: GoogleFonts.inter(fontSize: 13, color: AppTheme.textSecondary, height: 1.5),
           ),
           const SizedBox(height: 16),
@@ -2239,7 +2239,7 @@ Adopt open protocol architectures now to future-proof your development toolchain
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'HOW TO CONNECT YOUR GOOGLE ADSENSE ACCOUNT:',
+                  'GOOGLE ADSENSE INTEGRATION STATUS:',
                   style: AppTheme.codeStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
@@ -2247,10 +2247,10 @@ Adopt open protocol architectures now to future-proof your development toolchain
                   ),
                 ),
                 const SizedBox(height: 10),
-                _buildAdStep('1', 'Sign in at adsense.google.com with your Google (Gmail) account.'),
-                _buildAdStep('2', 'Click "Sites" -> "Add Site" and enter your domain: https://www.bhattaraibvk.com.np'),
-                _buildAdStep('3', 'Copy your unique Publisher ID (e.g. ca-pub-XXXXXXXXXXXXXXXX).'),
-                _buildAdStep('4', 'Provide your Publisher ID to embed in web/index.html — Google will approve your domain in 24–48 hours!'),
+                _buildAdStep('1', 'AdSense Publisher Account: pub-3634340207015593 (Active).'),
+                _buildAdStep('2', 'Official AdSense script embedded in web/index.html.'),
+                _buildAdStep('3', 'Authorized ads.txt deployed at https://www.bhattaraibvk.com.np/ads.txt.'),
+                _buildAdStep('4', 'Under AdSense Sites, add https://www.bhattaraibvk.com.np to request domain approval.'),
               ],
             ),
           ),
