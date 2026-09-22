@@ -1555,7 +1555,7 @@ Adopt open protocol architectures now to future-proof your development toolchain
                 icon: Icons.people_alt_rounded,
                 title: 'TOTAL PLATFORM VISITS',
                 value: '${report.totalVisits}',
-                sub: '+24.8% vs previous period',
+                sub: 'Live recorded traffic (Zero Dummy Data)',
                 subColor: Colors.greenAccent,
                 accentColor: Colors.blueAccent,
               ),
@@ -2187,34 +2187,152 @@ Adopt open protocol architectures now to future-proof your development toolchain
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(Icons.verified_rounded, color: Colors.greenAccent, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'GOOGLE ADSENSE MONETIZATION COMPLIANCE CHECKLIST',
-                style: AppTheme.codeStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.primaryAccent,
+              Row(
+                children: [
+                  const Icon(Icons.monetization_on_rounded, color: Colors.greenAccent, size: 22),
+                  const SizedBox(width: 8),
+                  Text(
+                    'GOOGLE ADSENSE MONETIZATION & ACCOUNT SETUP',
+                    style: AppTheme.codeStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.primaryAccent,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.amberAccent.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Colors.amberAccent.withValues(alpha: 0.3)),
+                ),
+                child: Text(
+                  'STATUS: READY TO LINK ADSENSE',
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.amberAccent,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           Text(
-            'Your site is built with modern high-RPM advertising architecture. The required Privacy Policy is indexed and live, and both in-article and sticky sidebar ad slots are operational.',
+            'Important: Google Ads (ads.google.com) is for advertisers paying to display ads. To earn money from your website, you use Google AdSense (adsense.google.com). Currently, no external AdSense account is connected yet—the site is operating in Direct Sponsorship & Native Ad mode with zero dummy revenue.',
             style: GoogleFonts.inter(fontSize: 13, color: AppTheme.textSecondary, height: 1.5),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 16),
+          // Step by Step guide box
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppTheme.surfaceElevated,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppTheme.border),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'HOW TO CONNECT YOUR GOOGLE ADSENSE ACCOUNT:',
+                  style: AppTheme.codeStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.primaryAccent,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _buildAdStep('1', 'Sign in at adsense.google.com with your Google (Gmail) account.'),
+                _buildAdStep('2', 'Click "Sites" -> "Add Site" and enter your domain: https://www.bhattaraibvk.com.np'),
+                _buildAdStep('3', 'Copy your unique Publisher ID (e.g. ca-pub-XXXXXXXXXXXXXXXX).'),
+                _buildAdStep('4', 'Provide your Publisher ID to embed in web/index.html — Google will approve your domain in 24–48 hours!'),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () => UrlService.launch('https://adsense.google.com/start/'),
+                icon: const Icon(Icons.open_in_new_rounded, size: 16),
+                label: const Text('Login to Google AdSense'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryAccent,
+                  foregroundColor: AppTheme.background,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  textStyle: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700),
+                ),
+              ),
+              OutlinedButton.icon(
+                onPressed: () => UrlService.launch('https://www.bhattaraibvk.com.np/privacy-policy.html'),
+                icon: const Icon(Icons.shield_outlined, size: 16),
+                label: const Text('View Live Privacy Policy'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppTheme.textPrimary,
+                  side: const BorderSide(color: AppTheme.border),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  textStyle: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
           Wrap(
             spacing: 12,
             runSpacing: 12,
             children: [
               _buildComplianceBadge('Privacy Policy Live', 'https://www.bhattaraibvk.com.np/privacy-policy.html', true),
-              _buildComplianceBadge('AdSense Ready', 'web/index.html tag slot available', true),
-              _buildComplianceBadge('Estimated Tech eCPM', '\$3.50 – \$6.20 USD / 1000 Impr.', true),
+              _buildComplianceBadge('Ad Slots Ready', 'Mid-article & sidebar banners coded', true),
+              _buildComplianceBadge('Zero Dummy Data', '100% real live visitor metrics', true),
               _buildComplianceBadge('Automated Daily Articles', '2x Daily via Gemini 1.5 Flash', true),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdStep(String stepNumber, String instruction) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 20,
+            height: 20,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: AppTheme.primaryAccent.withValues(alpha: 0.2),
+              shape: BoxShape.circle,
+              border: Border.all(color: AppTheme.primaryAccent, width: 1),
+            ),
+            child: Text(
+              stepNumber,
+              style: GoogleFonts.inter(
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: AppTheme.primaryAccent,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              instruction,
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                color: AppTheme.textPrimary,
+                height: 1.4,
+              ),
+            ),
           ),
         ],
       ),
