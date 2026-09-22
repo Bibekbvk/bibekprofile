@@ -8,6 +8,7 @@ import '../../admin/domain/models/analytics_model.dart';
 enum PortfolioSection {
   home,
   journals,
+  marketplace,
   education,
   products,
   experience,
@@ -20,6 +21,8 @@ enum PortfolioSection {
         return 'Home';
       case PortfolioSection.journals:
         return 'News';
+      case PortfolioSection.marketplace:
+        return 'Marketplace';
       case PortfolioSection.education:
         return 'Education';
       case PortfolioSection.products:
@@ -40,6 +43,8 @@ enum PortfolioSection {
         return 'गृहपृष्ठ';
       case PortfolioSection.journals:
         return 'समाचार';
+      case PortfolioSection.marketplace:
+        return 'डिजिटल बजार';
       case PortfolioSection.education:
         return 'शिक्षा';
       case PortfolioSection.products:

@@ -241,7 +241,7 @@ class _NavLinkItemState extends State<_NavLinkItem> {
         onTap: widget.onTap,
         behavior: HitTestBehavior.opaque,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
           margin: EdgeInsets.zero,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -249,7 +249,7 @@ class _NavLinkItemState extends State<_NavLinkItem> {
               Text(
                 widget.section.getLocalizedLabel(context.watch<PortfolioProvider>().isNepali),
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: widget.isActive ? FontWeight.w600 : FontWeight.w500,
                   color: textColor,
                 ),

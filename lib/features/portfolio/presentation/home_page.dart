@@ -12,6 +12,7 @@ import '../../admin/presentation/admin_login_dialog.dart';
 import '../../contact/presentation/contact_screen.dart';
 import '../../education/presentation/education_view.dart';
 import '../../journey/presentation/widgets/journey_timeline.dart';
+import '../../marketplace/presentation/marketplace_view.dart';
 import '../../products/presentation/products_view.dart';
 import 'portfolio_provider.dart';
 import 'widgets/hero_section.dart';
@@ -167,6 +168,8 @@ class _DynamicSectionView extends StatelessWidget {
         return 'Engineering Leadership, Health IT & Academic Portfolio';
       case PortfolioSection.journals:
         return 'AI & Technology News, Research & Insights';
+      case PortfolioSection.marketplace:
+        return 'AI Models, Intelligent Workflows & Custom IT Engineering';
       case PortfolioSection.education:
         return 'Degrees, Academic Qualifications & Coursework';
       case PortfolioSection.products:
@@ -193,11 +196,17 @@ class _DynamicSectionView extends StatelessWidget {
             SizedBox(height: 48),
             Divider(color: AppTheme.border, thickness: 1.0),
             SizedBox(height: 32),
+            MarketplaceView(),
+            SizedBox(height: 48),
+            Divider(color: AppTheme.border, thickness: 1.0),
+            SizedBox(height: 32),
             ProductsView(),
           ],
         );
       case PortfolioSection.journals:
         return const ContentView();
+      case PortfolioSection.marketplace:
+        return const MarketplaceView();
       case PortfolioSection.education:
         return const EducationView();
       case PortfolioSection.products:
@@ -457,6 +466,160 @@ class _Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
+
+    final infoColumn = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: 34,
+          height: 34,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: AppTheme.primaryAccent,
+              width: 1.0,
+            ),
+          ),
+          child: ClipOval(
+            child: Image.asset(
+              'assets/images/bibek_portrait.png',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: AppTheme.surfaceElevated,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'BB',
+                    style: AppTheme.codeStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.primaryAccent,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Bibek Bhattarai',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(
+                    '© 2026. Designed with solid minimalist aesthetics. • ',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: AppTheme.textSecondary,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () => UrlService.launch('${AppConstants.websiteUrl}/privacy-policy.html'),
+                    child: Text(
+                      'Privacy Policy',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppTheme.primaryAccent,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    ' • ',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: AppTheme.textSecondary,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () => UrlService.launch('${AppConstants.websiteUrl}/terms.html'),
+                    child: Text(
+                      'Terms of Service',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppTheme.primaryAccent,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    ' • ',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: AppTheme.textSecondary,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () => UrlService.launch('${AppConstants.websiteUrl}/disclaimer.html'),
+                    child: Text(
+                      'Disclaimer',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppTheme.primaryAccent,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    final actionButtons = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.code_rounded, size: 18),
+          color: AppTheme.textSecondary,
+          onPressed: () => UrlService.launch(AppConstants.githubUrl),
+          tooltip: 'GitHub',
+        ),
+        IconButton(
+          icon: const Icon(Icons.link_rounded, size: 18),
+          color: AppTheme.textSecondary,
+          onPressed: () => UrlService.launch(AppConstants.linkedinUrl),
+          tooltip: 'LinkedIn',
+        ),
+        IconButton(
+          icon: Icon(
+            context.watch<PortfolioProvider>().isAdminAuthenticated
+                ? Icons.admin_panel_settings_rounded
+                : Icons.lock_outline_rounded,
+            size: 18,
+          ),
+          color: context.watch<PortfolioProvider>().isAdminAuthenticated
+              ? AppTheme.primaryAccent
+              : AppTheme.textSecondary,
+          onPressed: () {
+            final provider = context.read<PortfolioProvider>();
+            if (provider.isAdminAuthenticated) {
+              provider.setSection(PortfolioSection.admin);
+            } else {
+              AdminLoginDialog.show(context);
+            }
+          },
+          tooltip: context.watch<PortfolioProvider>().isAdminAuthenticated
+              ? 'Admin Dashboard'
+              : 'Admin Access',
+        ),
+      ],
+    );
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 1200),
@@ -464,122 +627,23 @@ class _Footer extends StatelessWidget {
         horizontal: screenWidth < 600 ? 20 : 32,
         vertical: 36,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppTheme.primaryAccent,
-                    width: 1.0,
-                  ),
-                ),
-                child: ClipOval(
-                  child: Image.asset(
-                    'assets/images/bibek_portrait.png',
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: AppTheme.surfaceElevated,
-                        alignment: Alignment.center,
-                        child: Text(
-                          'BB',
-                          style: AppTheme.codeStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.primaryAccent,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Bibek Bhattarai',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        '© 2026. Designed with solid minimalist aesthetics. • ',
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          color: AppTheme.textSecondary,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () => UrlService.launch('${AppConstants.websiteUrl}/privacy-policy.html'),
-                        child: Text(
-                          'Privacy Policy',
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            color: AppTheme.primaryAccent,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.code_rounded, size: 18),
-                color: AppTheme.textSecondary,
-                onPressed: () => UrlService.launch(AppConstants.githubUrl),
-                tooltip: 'GitHub',
-              ),
-              IconButton(
-                icon: const Icon(Icons.link_rounded, size: 18),
-                color: AppTheme.textSecondary,
-                onPressed: () => UrlService.launch(AppConstants.linkedinUrl),
-                tooltip: 'LinkedIn',
-              ),
-              IconButton(
-                icon: Icon(
-                  context.watch<PortfolioProvider>().isAdminAuthenticated
-                      ? Icons.admin_panel_settings_rounded
-                      : Icons.lock_outline_rounded,
-                  size: 18,
-                ),
-                color: context.watch<PortfolioProvider>().isAdminAuthenticated
-                    ? AppTheme.primaryAccent
-                    : AppTheme.textSecondary,
-                onPressed: () {
-                  final provider = context.read<PortfolioProvider>();
-                  if (provider.isAdminAuthenticated) {
-                    provider.setSection(PortfolioSection.admin);
-                  } else {
-                    AdminLoginDialog.show(context);
-                  }
-                },
-                tooltip: context.watch<PortfolioProvider>().isAdminAuthenticated
-                    ? 'Admin Console (Active)'
-                    : 'Admin Portal Access',
-              ),
-            ],
-          ),
-        ],
-      ),
+      child: isDesktop
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(child: infoColumn),
+                const SizedBox(width: 24),
+                actionButtons,
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                infoColumn,
+                const SizedBox(height: 16),
+                actionButtons,
+              ],
+            ),
     );
   }
 }

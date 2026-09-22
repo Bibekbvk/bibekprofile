@@ -301,6 +301,7 @@ void main() {
     // Tap Admin Portal Access button in navbar
     final adminNavButton = find.byTooltip('Admin Portal Access').first;
     expect(adminNavButton, findsOneWidget);
+    await tester.ensureVisible(adminNavButton);
     await tester.tap(adminNavButton);
     await tester.pumpAndSettle();
 
@@ -499,6 +500,71 @@ void main() {
     expect(find.text('Export Analytics & Revenue Report'), findsOneWidget);
     expect(find.text('Close'), findsOneWidget);
     await tester.tap(find.text('Close'));
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('Marketplace section renders AI models, services, and handles language switching',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Navigate to Marketplace section
+    final marketTab = find.text('Marketplace').first;
+    expect(marketTab, findsOneWidget);
+    await tester.ensureVisible(marketTab);
+    await tester.tap(marketTab);
+    await tester.pumpAndSettle();
+
+    // Verify presence of AI Model products
+    expect(
+      find.text('Gemini 1.5 Pro & Flash Multi-Modal Enterprise Pipeline'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Private LLM On-Premise Deployment (DeepSeek & Llama 3.3)'),
+      findsOneWidget,
+    );
+
+    // Verify Category Filter Chips exist
+    expect(find.text('All Offerings'), findsOneWidget);
+    expect(find.text('AI Models & Architectures'), findsOneWidget);
+    expect(find.text('AI Services & Agents'), findsOneWidget);
+    expect(find.text('IT & App Engineering'), findsOneWidget);
+
+    // Test Language Switch to Nepali
+    final langSwitcher = find.text('🇬🇧 EN').first;
+    await tester.ensureVisible(langSwitcher);
+    await tester.tap(langSwitcher);
+    await tester.pumpAndSettle();
+
+    // Verify translated product titles and categories appear
+    expect(
+      find.text('गुगल जेमिनी १.५ प्रो र फ्ल्यास मल्टि-मोडल इन्टरप्राइज पाइपलाइन'),
+      findsOneWidget,
+    );
+    expect(find.text('सबै उत्पादनहरू'), findsOneWidget);
+    expect(find.text('एआई मोडेलहरू'), findsOneWidget);
+
+    // Tap Inquire / Order button on translated card
+    final orderBtn = find.text('अर्डर / सोधपुछ').first;
+    expect(orderBtn, findsOneWidget);
+    await tester.ensureVisible(orderBtn);
+    await tester.tap(orderBtn);
+    await tester.pumpAndSettle();
+
+    // Verify Inquiry modal opens in Nepali
+    expect(find.text('अर्डर तथा सोधपुछ'), findsOneWidget);
+    expect(find.text('इमेल पठाउनुहोस्'), findsOneWidget);
+
+    // Close modal
+    await tester.tap(find.text('बन्द गर्नुहोस्'));
     await tester.pumpAndSettle();
   });
 }
