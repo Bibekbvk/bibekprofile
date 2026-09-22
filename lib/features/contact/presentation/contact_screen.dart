@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/services/supabase_service.dart';
 import '../../../core/services/url_service.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../portfolio/presentation/portfolio_provider.dart';
 
 /// Interactive Contact Screen featuring form validation, animated feedback,
 /// and direct links to LinkedIn and professional domain (bhattaraibvk.com.np).
@@ -50,6 +52,14 @@ class _ContactScreenState extends State<ContactScreen> {
     if (!mounted) return;
 
     if (success) {
+      try {
+        context.read<PortfolioProvider>().recordInquiry(
+              name: _nameController.text,
+              email: _emailController.text,
+              message: _messageController.text,
+            );
+      } catch (_) {}
+
       setState(() {
         _isSubmitting = false;
         _isSubmittedSuccess = true;

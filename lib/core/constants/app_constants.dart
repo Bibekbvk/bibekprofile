@@ -19,4 +19,6 @@ class AppConstants {
   static const String linkedinUrl = 'https://linkedin.com/in/bhattaraibvk';
   static const String githubUrl = 'https://github.com/Bibekbvk';
   static const String email = 'contact@bhattaraibvk.com.np';
+  static const String machhamartPlayStoreUrl =
+      'https://play.google.com/store/apps/details?id=com.machhamart';
 }

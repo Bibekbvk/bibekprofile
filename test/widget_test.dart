@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:bibek_bhattarai_portfolio/main.dart';
 import 'package:bibek_bhattarai_portfolio/core/constants/app_constants.dart';
+import 'package:bibek_bhattarai_portfolio/features/portfolio/presentation/home_page.dart';
+import 'package:bibek_bhattarai_portfolio/features/portfolio/presentation/portfolio_provider.dart';
 
 void main() {
   setUp(() {
@@ -280,5 +283,115 @@ void main() {
     // Verify animated success card
     expect(find.text('Message Transmitted Successfully'), findsOneWidget);
     expect(find.text('Send Another Message'), findsOneWidget);
+  });
+
+  testWidgets('Admin section authenticates with admin / special4u@A credentials and opens dashboard',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Tap Admin Portal Access button in navbar
+    final adminNavButton = find.byTooltip('Admin Portal Access').first;
+    expect(adminNavButton, findsOneWidget);
+    await tester.tap(adminNavButton);
+    await tester.pumpAndSettle();
+
+    // Verify Admin Login modal appears
+    expect(find.text('ADMIN CONSOLE'), findsOneWidget);
+    expect(find.text('Administrator Access'), findsOneWidget);
+
+    // Enter wrong credentials first
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Enter username (e.g. admin)'),
+      'wrong_admin',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Enter administrative password'),
+      'wrong_pass',
+    );
+    await tester.tap(find.text('Sign In to Admin Portal'));
+    await tester.pumpAndSettle();
+
+    // Verify error feedback
+    expect(
+      find.text('Invalid administrative credentials. Access restricted.'),
+      findsOneWidget,
+    );
+
+    // Enter requested credentials: admin / special4u@A
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Enter username (e.g. admin)'),
+      'admin',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Enter administrative password'),
+      'special4u@A',
+    );
+    await tester.tap(find.text('Sign In to Admin Portal'));
+    await tester.pumpAndSettle();
+
+    // Verify Admin Dashboard is displayed
+    expect(find.text('EXECUTIVE CONSOLE'), findsOneWidget);
+    expect(find.text('Logged in: admin'), findsOneWidget);
+    expect(find.text('GOOGLE GEMINI AUTOMATION PIPELINE'), findsOneWidget);
+    expect(find.text('CRON ACTIVE'), findsOneWidget);
+    expect(find.text('12:00 AM NPT'), findsOneWidget);
+    expect(find.text('05:00 PM NPT'), findsOneWidget);
+
+    // Test sign out
+    final signOutBtn = find.text('Sign Out');
+    expect(signOutBtn, findsOneWidget);
+    await tester.tap(signOutBtn);
+    await tester.pumpAndSettle();
+
+    // Verify return to public home section
+    expect(find.text('Bridging Enterprise IT, Healthcare Systems, and Strategic Business.'), findsOneWidget);
+  });
+
+  testWidgets('Direct navigation to Admin section displays AdminLoginCard and allows authentication',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pumpAndSettle();
+
+    // Directly switch to admin section
+    final context = tester.element(find.byType(HomePage));
+    final provider = Provider.of<PortfolioProvider>(context, listen: false);
+    provider.setSection(PortfolioSection.admin);
+    await tester.pumpAndSettle();
+
+    // Verify AdminLoginCard is rendered inline
+    expect(find.text('RESTRICTED ACCESS'), findsOneWidget);
+    expect(find.text('Admin Authentication'), findsOneWidget);
+    expect(find.text('Authenticate & Open Dashboard'), findsOneWidget);
+
+    // Authenticate with admin / special4u@A
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Enter username (e.g. admin)'),
+      'admin',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Enter administrative password'),
+      'special4u@A',
+    );
+    await tester.tap(find.text('Authenticate & Open Dashboard'));
+    await tester.pumpAndSettle();
+
+    // Verify Dashboard is displayed
+    expect(find.text('EXECUTIVE CONSOLE'), findsOneWidget);
+    expect(find.text('Logged in: admin'), findsOneWidget);
   });
 }

@@ -7,6 +7,8 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/navbar.dart';
 import '../../content/presentation/content_view.dart';
 import '../../content/presentation/widgets/reader_view.dart';
+import '../../admin/presentation/admin_dashboard_screen.dart';
+import '../../admin/presentation/admin_login_dialog.dart';
 import '../../contact/presentation/contact_screen.dart';
 import '../../education/presentation/education_view.dart';
 import '../../journey/presentation/widgets/journey_timeline.dart';
@@ -15,8 +17,24 @@ import 'portfolio_provider.dart';
 import 'widgets/hero_section.dart';
 
 /// Main Landing Page and responsive navigation container for the web app.
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final frag = Uri.base.fragment.toLowerCase();
+      if (frag == 'admin' || frag == '/admin') {
+        context.read<PortfolioProvider>().setSection(PortfolioSection.admin);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +175,8 @@ class _DynamicSectionView extends StatelessWidget {
         return 'Executive Leadership & Professional Journey';
       case PortfolioSection.contact:
         return 'Start a Conversation & Consultations';
+      case PortfolioSection.admin:
+        return 'Executive Administration & Operational Control';
     }
   }
 
@@ -192,6 +212,11 @@ class _DynamicSectionView extends StatelessWidget {
         );
       case PortfolioSection.contact:
         return const ContactScreen();
+      case PortfolioSection.admin:
+        final provider = context.watch<PortfolioProvider>();
+        return provider.isAdminAuthenticated
+            ? const AdminDashboardScreen()
+            : const AdminLoginCard();
     }
   }
 }
@@ -512,6 +537,28 @@ class _Footer extends StatelessWidget {
                 color: AppTheme.textSecondary,
                 onPressed: () => UrlService.launch(AppConstants.linkedinUrl),
                 tooltip: 'LinkedIn',
+              ),
+              IconButton(
+                icon: Icon(
+                  context.watch<PortfolioProvider>().isAdminAuthenticated
+                      ? Icons.admin_panel_settings_rounded
+                      : Icons.lock_outline_rounded,
+                  size: 18,
+                ),
+                color: context.watch<PortfolioProvider>().isAdminAuthenticated
+                    ? AppTheme.primaryAccent
+                    : AppTheme.textSecondary,
+                onPressed: () {
+                  final provider = context.read<PortfolioProvider>();
+                  if (provider.isAdminAuthenticated) {
+                    provider.setSection(PortfolioSection.admin);
+                  } else {
+                    AdminLoginDialog.show(context);
+                  }
+                },
+                tooltip: context.watch<PortfolioProvider>().isAdminAuthenticated
+                    ? 'Admin Console (Active)'
+                    : 'Admin Portal Access',
               ),
             ],
           ),

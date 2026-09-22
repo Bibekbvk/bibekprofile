@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../content/data/mock_content_repository.dart';
 import '../../content/domain/models/journal_post.dart';
 
 /// Navigation routes/sections for Bibek Bhattarai's portfolio and journal app.
@@ -8,7 +9,8 @@ enum PortfolioSection {
   education,
   products,
   experience,
-  contact;
+  contact,
+  admin;
 
   String get label {
     switch (this) {
@@ -24,6 +26,8 @@ enum PortfolioSection {
         return 'Experience';
       case PortfolioSection.contact:
         return 'Contact';
+      case PortfolioSection.admin:
+        return 'Admin';
     }
   }
 }
@@ -33,12 +37,26 @@ class PortfolioProvider extends ChangeNotifier {
   bool _isMobileDrawerOpen = false;
   String _selectedCategory = 'All';
   JournalPost? _activePost;
+  bool _isAdminAuthenticated = false;
+
+  // Inquiries recorded in the session
+  final List<Map<String, String>> _inquiries = [
+    {
+      'name': 'Dr. Jane Smith',
+      'email': 'jane.smith@hospital.org',
+      'message':
+          'We would like to schedule an advisory consultation regarding HL7 FHIR clinical architecture and hospital triage queueing algorithms.',
+      'date': '2026-09-22 18:31:19',
+    },
+  ];
 
   PortfolioSection get currentSection => _currentSection;
   bool get isMobileDrawerOpen => _isMobileDrawerOpen;
   String get selectedCategory => _selectedCategory;
   JournalPost? get activePost => _activePost;
   bool get isReaderMode => _activePost != null;
+  bool get isAdminAuthenticated => _isAdminAuthenticated;
+  List<Map<String, String>> get inquiries => List.unmodifiable(_inquiries);
 
   void setSection(PortfolioSection section) {
     if (_currentSection != section || _activePost != null) {
@@ -71,6 +89,59 @@ class PortfolioProvider extends ChangeNotifier {
 
   void toggleMobileDrawer([bool? open]) {
     _isMobileDrawerOpen = open ?? !_isMobileDrawerOpen;
+    notifyListeners();
+  }
+
+  /// Authenticates the administrator using requested credentials:
+  /// Username: admin
+  /// Password: special4u@A
+  bool loginAdmin(String username, String password) {
+    final cleanUser = username.trim();
+    final cleanPass = password.trim();
+
+    if (cleanUser == 'admin' && cleanPass == 'special4u@A') {
+      _isAdminAuthenticated = true;
+      _currentSection = PortfolioSection.admin;
+      _activePost = null;
+      _isMobileDrawerOpen = false;
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
+  /// Logs out the administrator and returns to the home section.
+  void logoutAdmin() {
+    _isAdminAuthenticated = false;
+    _currentSection = PortfolioSection.home;
+    _activePost = null;
+    notifyListeners();
+  }
+
+  /// Records an inquiry submitted through the Contact form.
+  void recordInquiry({
+    required String name,
+    required String email,
+    required String message,
+  }) {
+    _inquiries.insert(0, {
+      'name': name.trim(),
+      'email': email.trim(),
+      'message': message.trim(),
+      'date': DateTime.now().toUtc().toIso8601String().substring(0, 19).replaceAll('T', ' '),
+    });
+    notifyListeners();
+  }
+
+  /// Clears inquiry list.
+  void clearInquiries() {
+    _inquiries.clear();
+    notifyListeners();
+  }
+
+  /// Adds a custom news/journal post directly from Admin console.
+  void publishCustomPost(JournalPost post) {
+    MockContentRepository.customPosts.insert(0, post);
     notifyListeners();
   }
 }

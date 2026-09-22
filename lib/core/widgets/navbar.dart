@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../../features/admin/presentation/admin_login_dialog.dart';
 import '../../features/portfolio/presentation/portfolio_provider.dart';
 import '../theme/app_theme.dart';
 
@@ -97,14 +98,40 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: PortfolioSection.values.map((section) {
-                        final isActive = provider.currentSection == section;
-                        return _NavLinkItem(
-                          section: section,
-                          isActive: isActive,
-                          onTap: () => provider.setSection(section),
-                        );
-                      }).toList(),
+                      children: [
+                        ...PortfolioSection.values
+                            .where((section) => section != PortfolioSection.admin)
+                            .map((section) {
+                          final isActive = provider.currentSection == section;
+                          return _NavLinkItem(
+                            section: section,
+                            isActive: isActive,
+                            onTap: () => provider.setSection(section),
+                          );
+                        }),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: Icon(
+                            provider.isAdminAuthenticated
+                                ? Icons.admin_panel_settings_rounded
+                                : Icons.lock_outline_rounded,
+                            size: 19,
+                            color: provider.isAdminAuthenticated
+                                ? AppTheme.primaryAccent
+                                : AppTheme.textSecondary,
+                          ),
+                          tooltip: provider.isAdminAuthenticated
+                              ? 'Admin Console (Logged In)'
+                              : 'Admin Portal Access',
+                          onPressed: () {
+                            if (provider.isAdminAuthenticated) {
+                              provider.setSection(PortfolioSection.admin);
+                            } else {
+                              AdminLoginDialog.show(context);
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 )
@@ -217,7 +244,9 @@ class MobileNavMenu extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ...PortfolioSection.values.map((section) {
+          ...PortfolioSection.values
+              .where((section) => section != PortfolioSection.admin)
+              .map((section) {
             final isActive = provider.currentSection == section;
             return InkWell(
               onTap: () => provider.setSection(section),
@@ -260,6 +289,71 @@ class MobileNavMenu extends StatelessWidget {
               ),
             );
           }),
+          const SizedBox(height: 6),
+          const Divider(color: AppTheme.border, thickness: 1.0),
+          const SizedBox(height: 6),
+          InkWell(
+            onTap: () {
+              provider.toggleMobileDrawer(false);
+              if (provider.isAdminAuthenticated) {
+                provider.setSection(PortfolioSection.admin);
+              } else {
+                AdminLoginDialog.show(context);
+              }
+            },
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              decoration: BoxDecoration(
+                color: provider.currentSection == PortfolioSection.admin
+                    ? AppTheme.primaryAccent.withValues(alpha: 0.1)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: provider.currentSection == PortfolioSection.admin
+                      ? AppTheme.primaryAccent
+                      : AppTheme.border,
+                  width: 1.0,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        provider.isAdminAuthenticated
+                            ? Icons.admin_panel_settings_rounded
+                            : Icons.lock_outline_rounded,
+                        size: 18,
+                        color: provider.isAdminAuthenticated
+                            ? AppTheme.primaryAccent
+                            : AppTheme.textSecondary,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        provider.isAdminAuthenticated
+                            ? 'Admin Console (Active)'
+                            : 'Admin Portal Access',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: provider.isAdminAuthenticated
+                              ? AppTheme.primaryAccent
+                              : AppTheme.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    size: 18,
+                    color: AppTheme.textSecondary,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

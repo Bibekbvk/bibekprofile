@@ -253,7 +253,10 @@ By utilizing an empirical Bayesian scoring cutoff, we recalibrated the decision 
     ),
   ];
 
+  static final List<JournalPost> customPosts = [];
+
   static List<JournalPost> get allPosts => [
+        ...customPosts,
         ...generatedAiPosts,
         ...mockPosts,
       ];
