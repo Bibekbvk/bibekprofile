@@ -270,9 +270,12 @@ By utilizing an empirical Bayesian scoring cutoff, we recalibrated the decision 
 
   static JournalPost? getFeaturedPost() {
     try {
+      if (generatedAiPosts.isNotEmpty) {
+        return generatedAiPosts.first;
+      }
       return mockPosts.firstWhere((p) => p.isFeatured);
     } catch (_) {
-      return mockPosts.isNotEmpty ? mockPosts.first : null;
+      return allPosts.isNotEmpty ? allPosts.first : null;
     }
   }
 }

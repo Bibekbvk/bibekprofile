@@ -253,7 +253,7 @@ class _HeroNarrative extends StatelessWidget {
               onPressed: onExploreJournals ??
                   () => provider.setSection(PortfolioSection.journals),
               icon: const Icon(Icons.auto_stories_outlined, size: 18),
-              label: const Text('Explore Journals'),
+              label: const Text('Explore News'),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               ),
@@ -406,7 +406,9 @@ class _FeaturedPostCardState extends State<_FeaturedPostCard> {
                       border: Border.all(color: AppTheme.border, width: 1.0),
                     ),
                     child: Text(
-                      'FEATURED RESEARCH',
+                      post.category == 'AI & Technology'
+                          ? 'LATEST AI NEWS'
+                          : 'FEATURED DISPATCH',
                       style: AppTheme.codeStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,

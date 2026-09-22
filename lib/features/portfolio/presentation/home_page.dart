@@ -148,7 +148,7 @@ class _DynamicSectionView extends StatelessWidget {
       case PortfolioSection.home:
         return 'Engineering Leadership, Health IT & Academic Portfolio';
       case PortfolioSection.journals:
-        return 'Health IT, Biostatistics & Clinical Informatics Journals';
+        return 'AI & Technology News, Research & Insights';
       case PortfolioSection.education:
         return 'Degrees, Academic Qualifications & Coursework';
       case PortfolioSection.products:

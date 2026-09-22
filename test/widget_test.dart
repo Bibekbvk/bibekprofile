@@ -26,7 +26,7 @@ void main() {
 
     // Verify Updated Navigation Architecture
     expect(find.text('Home'), findsWidgets);
-    expect(find.text('Journals'), findsWidgets);
+    expect(find.text('News'), findsWidgets);
     expect(find.text('Education'), findsWidgets);
     expect(find.text('Products'), findsWidgets);
     expect(find.text('Experience'), findsWidgets);
@@ -39,7 +39,7 @@ void main() {
     );
 
     // Verify Action Buttons
-    expect(find.text('Explore Journals'), findsOneWidget);
+    expect(find.text('Explore News'), findsOneWidget);
     expect(find.text('Get in Touch'), findsOneWidget);
 
     // Verify Biostatistics & Health IT Category Filter Pills
@@ -163,7 +163,7 @@ void main() {
   });
 
 
-  testWidgets('Reader View opens on Health IT article tap and displays statistics and cover image',
+  testWidgets('Reader View opens on AI & Technology article tap and displays statistics and cover image',
       (WidgetTester tester) async {
     tester.view.physicalSize = const Size(1400, 900);
     tester.view.devicePixelRatio = 1.0;
@@ -175,9 +175,9 @@ void main() {
     await tester.pumpWidget(const PortfolioApp());
     await tester.pumpAndSettle();
 
-    // Tap on the featured research post
+    // Tap on the featured AI news post
     final featuredPostFinder = find.text(
-      'Statistical Queueing Theory & Emergency Room Triage Optimization: An Empirical Study',
+      'The Death of the Text Editor: How Agentic Workflows are Engineering the Future',
     ).first;
     expect(featuredPostFinder, findsOneWidget);
     await tester.tap(featuredPostFinder);
@@ -187,7 +187,7 @@ void main() {
     expect(find.text('Back to Articles'), findsOneWidget);
     expect(find.text('Finished Reading — Back to Overview'), findsOneWidget);
     expect(
-      find.text('STATISTICAL RESEARCH REPORT • P < 0.001 SIGNIFICANCE'),
+      find.text('AGENTIC ARCHITECTURES REDEFINE VELOCITY • 400% INCREASE IN FEATURE DELIVERY'),
       findsOneWidget,
     );
 
@@ -197,7 +197,7 @@ void main() {
 
     // Verify overview is restored
     expect(find.text('Back to Articles'), findsNothing);
-    expect(find.text('FILTER HEALTH IT & BIOSTATISTICS JOURNALS'), findsOneWidget);
+    expect(find.text('FILTER AI & TECH NEWS'), findsOneWidget);
   });
 
   testWidgets('Experience section renders journey timeline and professional roles',

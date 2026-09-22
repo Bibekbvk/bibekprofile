@@ -45,7 +45,7 @@ class ContentView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'FILTER HEALTH IT & BIOSTATISTICS JOURNALS',
+                          'FILTER AI & TECH NEWS',
                           style: AppTheme.codeStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w700,

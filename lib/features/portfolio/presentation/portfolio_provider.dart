@@ -15,7 +15,7 @@ enum PortfolioSection {
       case PortfolioSection.home:
         return 'Home';
       case PortfolioSection.journals:
-        return 'Journals';
+        return 'News';
       case PortfolioSection.education:
         return 'Education';
       case PortfolioSection.products:
