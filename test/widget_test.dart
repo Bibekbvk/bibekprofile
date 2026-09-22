@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bibek_bhattarai_portfolio/main.dart';
+import 'package:bibek_bhattarai_portfolio/core/constants/app_constants.dart';
 
 void main() {
   setUp(() {
@@ -239,7 +240,7 @@ void main() {
 
     // Verify Contact Screen elements and website presence
     expect(find.text('Start a Strategic Conversation'), findsOneWidget);
-    expect(find.text('bhattaraibvk.com.np'), findsOneWidget);
+    expect(find.text(AppConstants.websiteLabel), findsOneWidget);
     expect(find.text('Send a Direct Message'), findsOneWidget);
 
     // Attempt to submit empty form to trigger validation errors

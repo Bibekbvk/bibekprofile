@@ -142,12 +142,14 @@ class ReaderView extends StatelessWidget {
                               color: AppTheme.primaryAccent,
                             ),
                             const SizedBox(width: 6),
-                            Text(
-                              post.sampleMetric!,
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: AppTheme.textPrimary,
+                            Expanded(
+                              child: Text(
+                                post.sampleMetric!,
+                                style: GoogleFonts.inter(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.textPrimary,
+                                ),
                               ),
                             ),
                           ],
@@ -407,12 +409,14 @@ class ReaderView extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Text(
-                                  'Written by ${AppConstants.authorName}',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppTheme.textPrimary,
+                                Flexible(
+                                  child: Text(
+                                    'Written by ${AppConstants.authorName}',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppTheme.textPrimary,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 6),
