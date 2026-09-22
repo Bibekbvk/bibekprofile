@@ -13,16 +13,26 @@ DART_FILE_PATH = os.path.join(os.path.dirname(__file__), '..', 'lib', 'features'
 SITEMAP_PATH = os.path.join(os.path.dirname(__file__), '..', 'web', 'sitemap.xml')
 
 TOPICS_ROTATION = [
-    "Cursor AI & Agentic Developer Workflows: How autonomous coding environments are replacing traditional IDEs",
-    "DeepSeek-V3 & Open Weights Revolution: Architectures, Mixture of Experts, and Cost-per-Token Economics",
-    "Claude 3.7 Sonnet and the Emergence of Hybrid Reasoning Models: System 1 vs System 2 Thinking in LLMs",
-    "Local On-Device AI with Llama 3 & Ollama: Running 70B Quantized Models on Mobile and Edge Hardware",
-    "Autonomous Multi-Agent Swarms: Architecting CrewAI, LangGraph, and AutoGen for Real-World Production Systems",
-    "AI-Augmented Healthcare & Clinical Telemetry: Transforming Health IT Diagnostics with Local LLM Privacy",
-    "The Evolution of Flutter & Mobile AI: Integrating On-Device Tensor Neural Processing Units in Dart Apps",
-    "Model Context Protocol (MCP): How Anthropic's Open Standard is Unifying Tools, APIs, and AI Agent Context",
-    "DeepSeek-R1 vs OpenAI o1 & o3: Chain of Thought Reasoning Benchmarks and Verification Architectures",
-    "Vector Databases & Hybrid Search: Scaling SQLite FTS5 with Semantic Embeddings for Real-time App Retrieval",
+    "MiniMax Video-01 vs HeyGen: The Free Open-Architecture AI Video Revolution Disrupting Generative Avatars",
+    "Top 7 Free GitHub AI Repositories You Must Clone: Self-Hosting vLLM, Ollama, ComfyUI, and Dify",
+    "Cursor AI & Agentic Developer Workflows: How Autonomous Free & Open Repositories Outpace Closed IDEs",
+    "DeepSeek-R1 & Open-Weights Reasoning: Running Distilled Zero-Cost Reasoning Models Locally with Ollama",
+    "Kokoro & ChatTTS Open Audio: Ultra-Realistic Free Local Voice Synthesis Replacing Commercial TTS APIs",
+    "Wan2.1 & CogVideoX: Running Cinematic 1080p AI Video Generation Locally on Consumer GPUs",
+    "OpenWebUI & Local AI Hubs: Self-Hosting an Enterprise-Grade ChatGPT Alternative for Free on GitHub",
+    "Claude 3.7 & Agentic Coding: Structuring Free Context-Aware Swarms with Model Context Protocol (MCP)",
+    "ComfyUI Mastery for AI Artists: Essential Free Custom Nodes and Workflows Trending on GitHub",
+    "FastAI & vLLM High-Throughput Inference: Slashing Token Latency by 70% with Zero Cloud Lock-in",
+]
+
+# Curated High-Resolution Royalty-Free Tech & AI Photography for News Dispatches
+CURATED_NEWS_PHOTOS = [
+    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",  # Neural Network Abstract
+    "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&q=80",  # AI Intelligence
+    "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",  # Coding & Terminal
+    "https://images.unsplash.com/photo-1535378620166-273708d44e4c?auto=format&fit=crop&w=1200&q=80",  # Generative AI Media
+    "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80",  # Deep Learning Mesh
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",  # GPU Chips & Hardware
 ]
 
 def load_existing_posts():
@@ -43,49 +53,52 @@ def generate_article_with_gemini(existing_slugs):
     """Call Google Gemini API to generate an authoritative, captivating AI tech article."""
     # Pick a topic that hasn't been recently covered
     selected_topic = TOPICS_ROTATION[0]
-    for topic in TOPICS_ROTATION:
+    selected_idx = 0
+    for idx, topic in enumerate(TOPICS_ROTATION):
         simplified = re.sub(r'[^a-zA-Z0-9]', '', topic.lower())
         matched = any(simplified in s.replace('-', '').lower() for s in existing_slugs)
         if not matched:
             selected_topic = topic
+            selected_idx = idx
             break
 
     now = datetime.now()
     current_date = now.strftime("%B %Y")
     post_id = f"post-ai-{int(now.timestamp())}"
+    suggested_photo = CURATED_NEWS_PHOTOS[selected_idx % len(CURATED_NEWS_PHOTOS)]
 
     prompt = f"""
-You are an elite AI researcher and software architect writing an authoritative, captivating technical dispatch for Bibek Bhattarai's technology journal.
-The article should be compelling, technical, data-driven, and attractive to software engineers, CTOs, and AI enthusiasts.
+You are an elite AI researcher, viral tech journalist, and open-source software architect writing an authoritative, captivating technical dispatch for Bibek Bhattarai's technology and AI news platform.
+The article must be engaging, data-driven, viral, and highly practical for software engineers, founders, and AI enthusiasts. It must spotlight practical tools, free GitHub repositories, and quantitative comparisons (e.g. inference speed, memory footprint, licensing).
 
 TOPIC: {selected_topic}
 
 Return ONLY a valid JSON object with the following schema:
 {{
   "id": "{post_id}",
-  "title": "A captivating, high-impact headline",
+  "title": "A high-impact, captivating headline that attracts organic search traffic and developers",
   "slug": "url-friendly-slug-lowercase",
   "category": "AI & Technology",
   "date": "{current_date}",
-  "readTime": "7 min read",
+  "readTime": "6 min read",
   "isFeatured": true,
-  "statisticsHeadline": "DATA-DRIVEN HEADLINE IN CAPS • STATISTICAL BREAKDOWN",
-  "sampleMetric": "Concrete quantitative metric (e.g. 3.2x throughput • 78% latency reduction)",
-  "newsImageUrl": "assets/images/products/app_feature_graphic.png",
-  "tags": ["AI", "Developer Tools", "Machine Learning", "Software Architecture"],
-  "excerpt": "A punchy, compelling 2-sentence summary highlighting the core technological shift.",
-  "contentMarkdown": "Comprehensive technical markdown article (at least 500 words). Include:
+  "statisticsHeadline": "DATA-DRIVEN HEADLINE IN CAPS • QUANTITATIVE BENCHMARKS",
+  "sampleMetric": "Concrete quantitative metric (e.g. 100% Free & Open-Source • 4.8x Faster Inference • Apache 2.0)",
+  "newsImageUrl": "{suggested_photo}",
+  "tags": ["AI Tools", "Free AI", "GitHub", "Open Source", "Machine Learning"],
+  "excerpt": "A punchy, viral 2-sentence summary highlighting why this tool or repository is taking over developer communities.",
+  "contentMarkdown": "Comprehensive technical markdown article (at least 600 words). Include:
 # Title
-### Architectural Overview
-Detailed explanation of how it works under the hood.
-### Quantitative Benchmarks & Key Metrics
-A markdown comparison table or performance breakdown.
-### Code Snippet & Implementation
-A concrete, runnable code example (Dart/Flutter, Python, or TypeScript).
-### Critical Analysis: Trade-offs & Production Realities
-Pros and cons, security implications, edge cases.
-### The Engineering Verdict
-Concluding forward-looking takeaway."
+### Why This AI Tool / Repository is Going Viral
+Explain the core breakthrough, why developers are switching to it, and how it compares to expensive closed alternatives (e.g. HeyGen, OpenAI, Runway).
+### Architectural Breakdown & Core Mechanics
+Detailed technical look at how the underlying weights, model architecture, or pipeline functions.
+### Quantitative Benchmarks & Comparison Matrix
+A markdown comparison table highlighting performance, VRAM usage, inference speed, and pricing/licensing.
+### Quickstart & Code Implementation
+A concrete, copy-pasteable terminal command, Python script, or Docker run snippet to get started in under 60 seconds.
+### The Open-Source Verdict & Roadmap
+Concluding actionable recommendation for developers and architects."
 }}
 
 Do not wrap in markdown ```json fences. Output raw JSON only.

@@ -186,13 +186,16 @@ void main() {
     await tester.tap(featuredPostFinder);
     await tester.pumpAndSettle();
 
-    // Verify Reader View elements
+    // Verify Reader View elements and Ad placements
     expect(find.text('Back to Articles'), findsOneWidget);
     expect(find.text('Finished Reading — Back to Overview'), findsOneWidget);
     expect(
       find.text('AGENTIC ARCHITECTURES REDEFINE VELOCITY • 400% INCREASE IN FEATURE DELIVERY'),
       findsOneWidget,
     );
+    expect(find.text('SPONSORED SPOTLIGHT'), findsOneWidget);
+    expect(find.text('VIRAL TOOLS ON GITHUB'), findsOneWidget);
+    expect(find.text('MiniMax Video-01'), findsOneWidget);
 
     // Tap Back to Articles to close reader mode
     await tester.tap(find.text('Back to Articles'));
@@ -393,5 +396,40 @@ void main() {
     // Verify Dashboard is displayed
     expect(find.text('EXECUTIVE CONSOLE'), findsOneWidget);
     expect(find.text('Logged in: admin'), findsOneWidget);
+
+    // Expand Compose News Article form
+    final composeBtn = find.text('Compose News Article');
+    expect(composeBtn, findsOneWidget);
+    await tester.ensureVisible(composeBtn);
+    await tester.tap(composeBtn);
+    await tester.pumpAndSettle();
+
+    // Verify AI Auto-Fill section is available
+    expect(find.text('AI VIRAL NEWS AUTO-GENERATOR'), findsOneWidget);
+    final autoFillBtn = find.text('Auto-Fill Full Article with AI');
+    expect(autoFillBtn, findsOneWidget);
+
+    // Tap Auto-Fill
+    await tester.ensureVisible(autoFillBtn);
+    await tester.tap(autoFillBtn);
+    await tester.pumpAndSettle();
+
+    // Verify Title is auto-filled with MiniMax vs HeyGen viral article
+    expect(
+      find.text('MiniMax Video-01 vs HeyGen: How Free Open AI Video Engines Outpace Commercial Subscriptions'),
+      findsOneWidget,
+    );
+
+    // Tap Publish
+    final publishBtn = find.text('Publish Immediately to Live Feed');
+    await tester.ensureVisible(publishBtn);
+    await tester.tap(publishBtn);
+    await tester.pumpAndSettle();
+
+    // Verify snackbar confirmation
+    expect(
+      find.textContaining('successfully published to live News feed!'),
+      findsOneWidget,
+    );
   });
 }

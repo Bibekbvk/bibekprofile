@@ -61,19 +61,48 @@ class _JournalCardState extends State<JournalCard> {
                   child: SizedBox(
                     height: 180,
                     width: double.infinity,
-                    child: Image.asset(
-                      widget.post.newsImageUrl!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: AppTheme.surfaceElevated,
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.newspaper_rounded,
-                          color: AppTheme.primaryAccent,
-                          size: 36,
-                        ),
-                      ),
-                    ),
+                    child: widget.post.newsImageUrl!.startsWith('http')
+                        ? Image.network(
+                            widget.post.newsImageUrl!,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Container(
+                                color: AppTheme.surfaceElevated,
+                                alignment: Alignment.center,
+                                child: const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppTheme.primaryAccent,
+                                  ),
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: AppTheme.surfaceElevated,
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.newspaper_rounded,
+                                color: AppTheme.primaryAccent,
+                                size: 36,
+                              ),
+                            ),
+                          )
+                        : Image.asset(
+                            widget.post.newsImageUrl!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: AppTheme.surfaceElevated,
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.newspaper_rounded,
+                                color: AppTheme.primaryAccent,
+                                size: 36,
+                              ),
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(height: 18),

@@ -26,9 +26,167 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   final _excerptController = TextEditingController();
   final _contentController = TextEditingController();
   final _tagsController = TextEditingController();
+  final _imageUrlController = TextEditingController(
+    text: 'https://images.unsplash.com/photo-1535378620166-273708d44e4c?auto=format&fit=crop&w=1200&q=80',
+  );
   String _selectedCategory = 'AI & Technology';
-  String _readTime = '5 min read';
+  String _readTime = '6 min read';
   bool _isComposerExpanded = false;
+  int _selectedViralTopicIndex = 0;
+
+  static final List<Map<String, dynamic>> _viralPresets = [
+    {
+      'name': 'MiniMax Video-01 vs HeyGen (Free AI Video)',
+      'title': 'MiniMax Video-01 vs HeyGen: How Free Open AI Video Engines Outpace Commercial Subscriptions',
+      'category': 'AI & Technology',
+      'readTime': '6 min read',
+      'imageUrl': 'https://images.unsplash.com/photo-1535378620166-273708d44e4c?auto=format&fit=crop&w=1200&q=80',
+      'tags': 'MiniMax, HeyGen, AI Video, Free AI Tools, Open Source Video',
+      'excerpt': 'With MiniMax Video-01 and Wan2.1 hitting open releases, developers and creators are achieving 1080p cinematic video and avatar synthesis without paying \$30+/mo commercial licensing.',
+      'metric': '100% Free Open Weights • 25 FPS Native • Zero Cloud Lock-In',
+      'content': r'''# MiniMax Video-01 vs HeyGen: How Free Open AI Video Engines Outpace Commercial Subscriptions
+
+### The Paradigm Shift in Generative Video
+For the past two years, creators and marketing teams relied on closed platforms like HeyGen and Runway, spending hundreds of dollars monthly on restrictive credit quotas and cloud rendering queues.
+
+The launch of **MiniMax Video-01**, alongside **Wan 2.1** and **CogVideoX**, has completely inverted this dynamic. By distributing open-weights foundation models capable of direct text-to-video, image-to-video, and avatar speech synchronization, the barrier to high-fidelity synthetic media has collapsed to zero.
+
+---
+
+### Comparative Architecture & Benchmarks
+
+| Feature / Model | HeyGen (Commercial SaaS) | MiniMax Video-01 (Open Weights) | Wan 2.1 (Open Source) |
+| :--- | :--- | :--- | :--- |
+| **Licensing** | Paid Subscription | Open Community API / Weights | Apache 2.0 |
+| **Resolution** | Up to 1080p / 4K | 1280x720 & 1080p Native | 1080p Ultra-HD |
+| **Frame Consistency** | High | Very High (Diffusion Transformer) | State-of-the-Art DiT |
+| **Local Inference** | No (Cloud Only) | Supported (FP8 / INT4 VRAM) | Supported (Consumer 16GB GPU) |
+| **Cost Per Render** | \$1.00 – \$3.00/min | \$0.00 (Self-Hosted) | \$0.00 (Local Hardware) |
+
+---
+
+### Quickstart: Running MiniMax Inference in Python
+
+```python
+import requests
+
+# Example interacting with local or self-hosted MiniMax Video endpoint
+endpoint = "http://localhost:8000/v1/video/generations"
+payload = {
+    "prompt": "Cinematic slow pan across modern server room, neon lighting, 8k resolution photorealistic",
+    "resolution": "1080p",
+    "duration_seconds": 6
+}
+response = requests.post(endpoint, json=payload)
+print("Rendering Job Initiated:", response.json()["task_id"])
+```
+
+---
+
+### Key Takeaways for Developers
+- Open-weights models now match or exceed proprietary video quality.
+- Integrating these pipelines into automated marketing bots and video synthesis backends saves thousands in SaaS overhead.
+- Watch GitHub for community ComfyUI wrappers that package these models for one-click desktop generation.''',
+    },
+    {
+      'name': 'Top 7 Free GitHub AI Repos (vLLM, Ollama, Dify)',
+      'title': 'Top 7 Free GitHub AI Repositories You Should Clone This Week for Zero-Cost Intelligence',
+      'category': 'AI & Technology',
+      'readTime': '7 min read',
+      'imageUrl': 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
+      'tags': 'GitHub, Open Source, vLLM, Ollama, Dify, ComfyUI, DeepSeek',
+      'excerpt': 'From blazing-fast vLLM PagedAttention serving to zero-setup local Ollama reasoning and Dify agent workflows, these open-source GitHub repositories replace tens of paid cloud tools.',
+      'metric': '100% Open Source • 350K+ GitHub Stars Combined • Apache / MIT',
+      'content': r'''# Top 7 Free GitHub AI Repositories You Should Clone This Week for Zero-Cost Intelligence
+
+### The Open Source AI Explosion on GitHub
+The era of paying monthly subscriptions for basic LLM chat interfaces, embedding stores, and API wrappers is officially over. The open-source community on GitHub has engineered battle-tested alternatives that run natively on consumer hardware and self-hosted cloud instances.
+
+Here are the top repositories delivering maximum leverage in 2026:
+
+---
+
+### 1. vLLM (vllm-project/vllm)
+- **What it is**: High-throughput and memory-efficient LLM serving engine.
+- **Why it matters**: Uses **PagedAttention** to eliminate VRAM fragmentation, delivering **2x–4x higher throughput** than standard HuggingFace pipelines.
+
+### 2. Ollama (ollama/ollama)
+- **What it is**: One-line command CLI for running Llama 3, DeepSeek-R1, and Mistral models locally.
+- **Why it matters**: Zero-configuration quantization and cross-platform GPU acceleration (macOS Metal, Windows CUDA, Linux ROCm).
+
+### 3. Dify (langgenius/dify)
+- **What it is**: Open-source LLM app development and visual multi-agent workflow platform.
+- **Why it matters**: Replaces complex LangChain scripts with an intuitive visual canvas for RAG and autonomous tool execution.
+
+### 4. ComfyUI (comfyanonymous/ComfyUI)
+- **What it is**: Node-based graph architecture for generative image, video, and audio synthesis.
+- **Why it matters**: Surgical control over diffusion latents, ControlNet weights, and LoRA stacking.
+
+### 5. Kokoro-82M (hexgrad/kokoro)
+- **What it is**: Ultra-lightweight 82M parameter text-to-speech model.
+- **Why it matters**: Delivers ElevenLabs-quality voice synthesis in real time with a tiny footprint.
+
+---
+
+### Implementation: Quick Terminal Setup
+
+```bash
+# 1. Spin up high-speed local inference with Ollama
+curl -fsSL https://ollama.com/install.sh | sh
+ollama run deepseek-r1:8b
+
+# 2. Deploy vLLM server with OpenAI-compatible API
+pip install vllm
+python -m vllm.entrypoints.openai.api_server --model meta-llama/Meta-Llama-3-8B-Instruct
+```
+
+---
+
+### Architectural Conclusion
+Self-hosting these repositories gives you complete data privacy, zero API rate limits, and zero recurring cloud costs.''',
+    },
+    {
+      'name': 'Cursor AI & Claude 3.7 Free Agentic Swarms',
+      'title': 'Autonomous Agentic Coding with Cursor & Claude: How Free Model Context Protocols Scale Delivery',
+      'category': 'AI & Technology',
+      'readTime': '6 min read',
+      'imageUrl': 'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&q=80',
+      'tags': 'Cursor AI, Agentic Coding, Claude 3.7, MCP, Software Architecture',
+      'excerpt': 'By interconnecting autonomous code agents with Anthropic’s Model Context Protocol (MCP), engineering teams are automating refactoring and test generation with 400% velocity gains.',
+      'metric': '400% Feature Velocity Gain • Zero Context Drift • Open MCP Standard',
+      'content': r'''# Autonomous Agentic Coding with Cursor & Claude: How Free Model Context Protocols Scale Delivery
+
+### The Transition from Autocomplete to Autonomous Swarms
+The developer tooling landscape has moved beyond single-line inline code completion. Today's engineering workflows leverage agentic swarms that read entire repository trees, execute unit tests in isolated subprocesses, and iterate until all assertions pass.
+
+---
+
+### Core Mechanics: The Model Context Protocol (MCP)
+The breakthrough enabling multi-tool swarms is Anthropic's open **Model Context Protocol (MCP)**:
+- **Client-Server Architecture**: Separates the LLM orchestrator from local tools, databases, and filesystem access.
+- **Standardized Schemas**: Tools expose capabilities via JSON-RPC, enabling zero-shot tool selection without brittle regex prompt engineering.
+- **Safe Execution Boundaries**: Grants granular read/write permissions per session.
+
+---
+
+### Benchmarking Agentic Velocity
+
+```
++--------------------------------------------------------------------+
+| TASK                         | MANUAL ESTIMATE | MCP AGENT SWARM   |
++--------------------------------------------------------------------+
+| Full Test Suite Generation   | 4.5 Hours       | 8.2 Minutes       |
+| API Migration Refactor       | 6.0 Hours       | 14.5 Minutes      |
+| Dependency Vulnerability Fix | 2.0 Hours       | 3.1 Minutes       |
++--------------------------------------------------------------------+
+```
+
+---
+
+### Practical Recommendation
+Adopt open protocol architectures now to future-proof your development toolchain against proprietary IDE lock-in.''',
+    },
+  ];
 
   @override
   void dispose() {
@@ -36,7 +194,35 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     _excerptController.dispose();
     _contentController.dispose();
     _tagsController.dispose();
+    _imageUrlController.dispose();
     super.dispose();
+  }
+
+  void _handleAiAutoFill() {
+    final preset = _viralPresets[_selectedViralTopicIndex];
+    setState(() {
+      _titleController.text = preset['title'] as String;
+      _selectedCategory = preset['category'] as String;
+      _readTime = preset['readTime'] as String;
+      _imageUrlController.text = preset['imageUrl'] as String;
+      _tagsController.text = preset['tags'] as String;
+      _excerptController.text = preset['excerpt'] as String;
+      _contentController.text = preset['content'] as String;
+    });
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: AppTheme.primaryAccent,
+        content: Text(
+          '⚡ AI Auto-Fill complete for "${preset['name']}"! Review and edit before publishing.',
+          style: GoogleFonts.inter(
+            color: AppTheme.background,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
   }
 
   void _handlePublishCustomPost() {
@@ -53,6 +239,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         .replaceAll(RegExp(r'[^a-z0-9]+'), '-')
         .replaceAll(RegExp(r'^-+|-+$'), '');
 
+    final preset = _viralPresets[_selectedViralTopicIndex];
+    final sampleMetric = preset['metric'] as String? ?? 'Verified by Bibek Bhattarai • Admin Dispatch';
+
     final newPost = JournalPost(
       id: 'custom-${DateTime.now().millisecondsSinceEpoch}',
       title: _titleController.text.trim(),
@@ -62,15 +251,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       readTime: _readTime,
       excerpt: _excerptController.text.trim(),
       contentMarkdown: _contentController.text.trim(),
-      tags: tags.isNotEmpty ? tags : [_selectedCategory, 'Breaking'],
+      tags: tags.isNotEmpty ? tags : [_selectedCategory, 'Breaking', 'AI Tools'],
       statisticsHeadline: 'ADMIN DIRECT DISPATCH • LIVE BROADCAST',
-      sampleMetric: 'Authored & Verified by Bibek Bhattarai',
-      newsImageUrl: 'assets/images/products/app_feature_graphic.png',
+      sampleMetric: sampleMetric,
+      newsImageUrl: _imageUrlController.text.trim().isNotEmpty
+          ? _imageUrlController.text.trim()
+          : 'assets/images/products/app_feature_graphic.png',
       isFeatured: true,
     );
 
     context.read<PortfolioProvider>().publishCustomPost(newPost);
 
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: AppTheme.primaryAccent,
@@ -560,6 +752,85 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      // Viral AI Presets & Auto-Fill Section
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        margin: const EdgeInsets.only(bottom: 20),
+                        decoration: BoxDecoration(
+                          color: AppTheme.surfaceElevated,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppTheme.primaryAccent.withValues(alpha: 0.3),
+                            width: 1.0,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.auto_awesome, color: AppTheme.primaryAccent, size: 18),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'AI VIRAL NEWS AUTO-GENERATOR',
+                                  style: AppTheme.codeStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppTheme.primaryAccent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Select a trending viral AI topic below to auto-fill the headline, excerpt, benchmark metrics, code quickstart, and curated high-resolution photo.',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: AppTheme.textSecondary,
+                                height: 1.45,
+                              ),
+                            ),
+                            const SizedBox(height: 14),
+                            DropdownButtonFormField<int>(
+                              initialValue: _selectedViralTopicIndex,
+                              dropdownColor: AppTheme.surface,
+                              style: GoogleFonts.inter(fontSize: 13, color: AppTheme.textPrimary),
+                              decoration: _inputDecoration('Choose Viral AI Topic'),
+                              items: List.generate(_viralPresets.length, (i) {
+                                return DropdownMenuItem(
+                                  value: i,
+                                  child: Text(
+                                    _viralPresets[i]['name'] as String,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                );
+                              }),
+                              onChanged: (val) {
+                                if (val != null) {
+                                  setState(() => _selectedViralTopicIndex = val);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 12),
+                            ElevatedButton.icon(
+                              onPressed: _handleAiAutoFill,
+                              icon: const Icon(Icons.electric_bolt_rounded, size: 16),
+                              label: const Text('Auto-Fill Full Article with AI'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.primaryAccent.withValues(alpha: 0.2),
+                                foregroundColor: AppTheme.primaryAccent,
+                                elevation: 0,
+                                side: const BorderSide(color: AppTheme.primaryAccent),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
                       // Title
                       Text(
                         'ARTICLE TITLE',
@@ -575,6 +846,24 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         style: GoogleFonts.inter(fontSize: 14, color: AppTheme.textPrimary),
                         decoration: _inputDecoration('e.g. Breakthrough in Autonomous Neural Architecture Search'),
                         validator: (val) => val == null || val.trim().isEmpty ? 'Title is required' : null,
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Cover Photo URL
+                      Text(
+                        'COVER PHOTO URL (HIGH-RES / UNSPLASH)',
+                        style: AppTheme.codeStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      TextFormField(
+                        controller: _imageUrlController,
+                        style: GoogleFonts.inter(fontSize: 14, color: AppTheme.textPrimary),
+                        decoration: _inputDecoration('https://images.unsplash.com/photo-...'),
                       ),
 
                       const SizedBox(height: 16),

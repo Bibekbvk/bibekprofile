@@ -513,12 +513,28 @@ class _Footer extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    '© 2026. Designed with solid minimalist aesthetics.',
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: AppTheme.textSecondary,
-                    ),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text(
+                        '© 2026. Designed with solid minimalist aesthetics. • ',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => UrlService.launch('${AppConstants.websiteUrl}/privacy-policy.html'),
+                        child: Text(
+                          'Privacy Policy',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: AppTheme.primaryAccent,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
