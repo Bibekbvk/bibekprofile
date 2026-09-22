@@ -1,10 +1,12 @@
 import '../domain/models/journal_post.dart';
 import '../domain/models/study_note.dart';
+import 'generated_ai_posts.dart';
 
-/// Repository supplying curated Health IT & Statistics news-style journals and research papers.
+/// Repository supplying curated AI, Health IT & Statistics news-style journals and research papers.
 class MockContentRepository {
   static const List<String> categories = [
     'All',
+    'AI & Technology',
     'Biostatistics',
     'Clinical Informatics',
     'Health Systems',
@@ -251,9 +253,14 @@ By utilizing an empirical Bayesian scoring cutoff, we recalibrated the decision 
     ),
   ];
 
+  static List<JournalPost> get allPosts => [
+        ...generatedAiPosts,
+        ...mockPosts,
+      ];
+
   static List<JournalPost> getPostsByCategory(String category) {
-    if (category == 'All') return mockPosts;
-    return mockPosts.where((p) => p.category == category).toList();
+    if (category == 'All') return allPosts;
+    return allPosts.where((p) => p.category == category).toList();
   }
 
   static List<StudyNote> getStudyNotesByCategory(String category) {

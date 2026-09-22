@@ -1,0 +1,43 @@
+name: Twice-Daily AI News Automation
+
+on:
+  schedule:
+    # 11:15 UTC is 5:00 PM Nepal Time (NPT = UTC+5:45)
+    # 18:15 UTC is 12:00 AM (Midnight) Nepal Time
+    - cron: '15 11,18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: source
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate AI Article with Google Gemini
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/generate_ai_news.py
+
+      - name: Commit and Push to Source
+        run: |
+          git config --global user.name "Bibek AI News Bot"
+          git config --global user.email "bot@bhattaraibvk.com.np"
+          git add lib/features/content/data/generated_ai_posts.dart web/sitemap.xml
+          if git diff-index --quiet HEAD --; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore(news): publish automated AI technology dispatch"
+            git push origin source
+          fi
