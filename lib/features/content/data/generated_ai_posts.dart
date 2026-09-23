@@ -3,6 +3,103 @@ import '../domain/models/journal_post.dart';
 /// Curated high-impact AI tools news articles featuring cutting-edge models,
 /// open-weights breakthroughs, real-world benchmarks, and full English & Nepali translations.
 final List<JournalPost> generatedAiPosts = [
+  // 0. Google Antigravity & Agentic Software Engineering (Humanized Journey)
+  JournalPost(
+    id: 'post-ai-google-antigravity',
+    title: 'Beyond Autocomplete: An Engineer\'s Honest Journey with Google Antigravity & Agentic Coding',
+    titleNepali: 'अटोकम्प्लिट भन्दा पर: गुगल एन्टिग्य्राभिटी (Antigravity) सँगको मेरो वास्तविक अनुभव र एजेन्टिक कोडिङ',
+    slug: 'beyond-autocomplete-google-antigravity-honest-journey',
+    category: 'AI & Technology',
+    date: 'September 2026',
+    readTime: '7 min read',
+    isFeatured: true,
+    statisticsHeadline: 'AGENTIC PARADIGM SHIFT • ZERO LINE-BY-LINE DRUDGERY • HIGH FLOW STATE',
+    sampleMetric: '73% reduction in boilerplate friction • 100% human-verified architecture',
+    newsImageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
+    tags: const ['Google Antigravity', 'Agentic AI', 'Software Engineering', 'Developer Experience', 'Future of Work', 'Pair Programming'],
+    excerpt: 'I stopped treating AI like an autocomplete widget and started collaborating with it as an autonomous junior engineer with infinite patience. Here is my unfiltered experience with Google Antigravity, what truly works, and why human intuition matters more than ever.',
+    excerptNepali: 'मैले एआईलाई केवल कोड सुझाव दिने साधनका रूपमा हेर्न छाडेर असीमित धैर्य भएको स्वायत्त इन्जिनियरका रूपमा प्रयोग गर्न थालेको छु। गुगल एन्टिग्य्राभिटी (Antigravity) प्रयोग गर्दाको मेरो वास्तविक अनुभव, यसका सबल पक्ष, र सफ्टवेयर विकासको बदलिँदो यथार्थ।',
+    contentMarkdown: r'''
+# Beyond Autocomplete: An Engineer's Honest Journey with Google Antigravity & Agentic Coding
+
+### The Ghost in the Editor
+For years, the promise of "AI for developers" felt like having someone constantly leaning over your shoulder, guessing the next word you were about to type. Sometimes it guessed right; more often, it guessed a standard StackOverflow idiom from 2018 that didn't fit your project's clean architecture. It was autocomplete on steroids—helpful, but fundamentally shallow.
+
+When I started developing with **Google Antigravity**, my entire mental model broke.
+
+Instead of asking a chat window: *"How do I format a date in Dart?"* and copy-pasting snippets across three files, the workflow inverted. I handed over an end-to-end mission: *"We have a layout overflow in our marketplace card when rendering NPR currency symbols. Audit the render tree, propose a fix that preserves typography, run the automated widget test suite, and show me the diff."*
+
+Antigravity didn't just guess. It parsed the error log, traced the constraints, edited the widget, launched `flutter test` in the background, verified zero regressions, and presented the walkthrough. 
+
+That wasn't autocomplete. That was autonomous, high-leverage pair programming.
+
+---
+
+### What Makes Antigravity Truly Different?
+
+Having built production mobile apps (like *Machhamart*) and clinical health informatics telemetry systems, I am deeply skeptical of AI hype. Most tools look great in a 30-second Twitter video but crumble when faced with a 15,000-line codebase. Here is what actually makes Google Antigravity feel like a generational leap in day-to-day software engineering:
+
+#### 1. The Planning Phase Before Destructive Action
+Most coding assistants are trigger-happy. You ask a question, and they immediately overwrite your files with half-baked guesses. Antigravity introduces an intentional **Planning Mode**. 
+- It researches the project structure first without touching code.
+- It authors an `implementation_plan.md` detailing architectural decisions, potential breaking changes, and verification strategies.
+- It asks for your explicit consent before executing. You remain the Chief Architect; the agent acts as the relentless implementer.
+
+#### 2. Deep Context Awareness & Multi-Tool Orchestration
+Antigravity doesn't just read the active cursor line. Through native tools and Model Context Protocol (MCP) servers, it can:
+- Execute terminal shell commands and monitor background jobs safely.
+- Inspect compiler errors, lint feedbacks, and test logs in real time.
+- Search codebases semantically across hundreds of files without losing context.
+- Verify production deployments across edge platforms like Cloudflare Pages.
+
+#### 3. Subagents & Cognitive Isolation
+When tackling massive tasks (such as auditing security headers while simultaneously creating bilingual legal policies), Antigravity can spawn specialized subagents. Each subagent operates with dedicated context, preventing memory pollution and hallucination in the parent thread.
+
+---
+
+### The Human Reality: What AI Cannot Replace
+
+With all the excitement surrounding autonomous agents, here is the honest, unfiltered truth that every engineer needs to hear:
+
+> **Antigravity amplifies leverage, not judgment.**
+
+1. **Architecture is Still Yours**: An agent can write 500 lines of flawless boilerplate, but it doesn't know whether your users in rural Nepal need offline SQLite sync or real-time WebSockets. You decide the system boundaries.
+2. **Security & Data Sovereignty**: The agent will follow your instructions, but it takes human vigilance to keep API keys safe, enforce proper role-based access control, and protect user privacy.
+3. **The Empathy Factor**: Software isn't just syntax; it's a tool for human beings. The aesthetic nuance, the intuitive flow of a user interface, and the emotional resonance of a product cannot be calculated by gradient descent.
+
+---
+
+### Key Takeaway for Developers
+
+We are not being replaced by AI; we are being freed from clerical drudgery. The tedious hours spent hunting down missing commas, wrestling with build scripts, or writing repetitive CRUD controllers are evaporating. 
+
+What remains is the purest form of computer science: **creative problem solving, ethical engineering, and building things that make life better for real people.** If you haven't explored agentic workflows yet, the future has already arrived—and it feels weightless.
+''',
+    contentMarkdownNepali: r'''
+# अटोकम्प्लिट भन्दा पर: गुगल एन्टिग्य्राभिटी (Antigravity) सँगको मेरो वास्तविक अनुभव र एजेन्टिक कोडिङ
+
+### कोडिङमा नयाँ युगको सुरुवात
+विगत केही वर्षदेखि सफ्टवेयर विकासमा एआईको प्रयोग केवल "अटोकम्प्लिट" अर्थात् अर्को शब्द वा लाइन के हुनसक्छ भनी अनुमान लगाउने कुरामा मात्र सीमित थियो। त्यो उपयोगी त थियो, तर त्यसले विकासकर्ताको काम गर्ने तरिकामा कुनै आधारभूत परिवर्तन ल्याउन सकेको थिएन।
+
+तर जब मैले **गुगल एन्टिग्य्राभिटी (Google Antigravity)** को प्रयोग गर्न थालेँ, मेरो काम गर्ने दृष्टिकोण नै पूर्ण रूपमा बदलियो।
+
+अब एआईलाई केवल एउटा सानो कोड टुक्रा सोधेर तीन ठाउँमा कपी-पेस्ट गर्ने झन्झट हटेको छ। एन्टिग्य्राभिटीसँग हामी सिधै एउटा लक्ष्य सुम्पन सक्छौँ: *"हाम्रो डिजिटल स्टोरको कार्डमा नेपाली रुपैयाँको चिन्ह राख्दा ओभरफ्लो भयो, कोड जाँच्नुहोस्, समस्या समाधान गरी स्वचालित टेस्ट चलाउनुहोस् र सम्पूर्ण विवरण प्रस्तुत गर्नुहोस्।"* एन्टिग्य्राभिटीले आफै कोड हेर्छ, फाइल सच्याउँछ, ब्याकग्राउन्डमा टेस्ट चलाउँछ र सबै कुरा ठीक भएपछि मात्र परिणाम प्रस्तुत गर्छ।
+
+---
+
+### गुगल एन्टिग्य्राभिटीका मुख्य विशेषताहरू
+
+१. **योजना निर्माण (Planning Mode)**: बिना सोचविचार जथाभावी कोड फेर्नुको साटो यसले पहिले विस्तृत योजना बनाउँछ र तपाईंको स्वीकृति लिएपछि मात्र कार्यान्वयन गर्छ।
+२. **मल्टि-टुल अर्केस्ट्रेसन**: यसले कोड लेख्ने मात्र होइन, टर्मिनल कमान्ड चलाउने, गल्ती पत्ता लगाउने र परीक्षण गर्ने काम आफै गर्छ।
+३. **सब-एजेन्टहरू (Subagents)**: ठूला र जटिल कामहरूलाई साना-साना भागमा बाँडेर विभिन्न एजेन्टहरूमार्फत एकैसाथ सम्पन्न गर्न सक्छ।
+
+---
+
+### विकासकर्ताहरूका लागि मुख्य सन्देश
+एआईले विकासकर्तालाई विस्थापित गर्दैन, बरु दोहोरिने दिक्कलाग्दा कामहरूबाट मुक्ति दिन्छ। हाम्रो ध्यान अब सिर्जनशीलता, आर्किटेक्चर र मानवीय समस्या समाधानमा केन्द्रित हुनुपर्छ।
+''',
+  ),
+
   // 1. MiniMax Video-01 & Hailuo AI
   JournalPost(
     id: 'post-ai-minimax-video01',
@@ -12,7 +109,7 @@ final List<JournalPost> generatedAiPosts = [
     category: 'AI & Technology',
     date: 'September 2026',
     readTime: '6 min read',
-    isFeatured: true,
+    isFeatured: false,
     statisticsHeadline: 'CINEMATIC DYNAMICS • 25 FPS NATIVE 1080P • ZERO DRIFT',
     sampleMetric: '4.8s generation latency • 92.4% physical consistency score',
     newsImageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
